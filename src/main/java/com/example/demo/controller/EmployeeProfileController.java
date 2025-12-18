@@ -24,7 +24,7 @@ public class EmployeeProfile {
     private String teamName;
     private String role;
     private Boolean active;
-
+    @PreP
     private LocalDateTime createdAt =LocalDateTime.now();
 
     public EmployeeProfile(LocalDateTime createdAt) {
