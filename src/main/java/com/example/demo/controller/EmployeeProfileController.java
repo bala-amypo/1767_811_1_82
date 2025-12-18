@@ -6,6 +6,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.PrePersist;
 import jakarta.persistence.GenerationType;
 
 
@@ -24,8 +25,7 @@ public class EmployeeProfile {
     private String teamName;
     private String role;
     private Boolean active;
-    @PreP
-    private LocalDateTime createdAt =LocalDateTime.now();
+    private LocalDateTime createdAt ;
 
     public EmployeeProfile(LocalDateTime createdAt) {
         this.createdAt = createdAt;
@@ -42,7 +42,10 @@ public class EmployeeProfile {
         this.active = active;
         this.createdAt = createdAt;
     }
-
+    @PrePersist
+public void onCreate(){
+    createdAt=LocalDateTime.now();
+}
     public Long getId() {
         return id;
     }
