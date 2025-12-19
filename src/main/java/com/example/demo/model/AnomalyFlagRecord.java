@@ -1,18 +1,19 @@
 package com.example.demo.model;
 
 import java.time.LocalDateTime;
+
 import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 
 
 @Entity
 public class AnomalyFlagRecord {
 @Id
 @GeneratedValue(strategy =GenerationType.IDENTITY)
-private Long Id;
-private Long employeeid;
+private Long id;
+private Long employeeId;
 private Long metricid;
 private String ruleCode;
 private String severity;
@@ -26,7 +27,7 @@ public AnomalyFlagRecord() {
 public AnomalyFlagRecord(Long id, Long employeeid, Long metricid, String ruleCode, String severity, String details,
         LocalDateTime flaggedAt, Boolean resolved) {
     this.id = id;
-    this.employeeid = employeeid;
+    this.employeeId = employeeId;
     this.metricid = metricid;
     this.ruleCode = ruleCode;
     this.severity = severity;
@@ -41,11 +42,11 @@ public Long getId() {
 public void setId(Long id) {
     this.id = id;
 }
-public Long getEmployeeid() {
-    return employeeid;
+public Long getEmployeeId() {
+    return employeeId;
 }
-public void setEmployeeid(Long employeeid) {
-    this.employeeid = employeeid;
+public void setEmployeeid(Long employeeId) {
+    this.employeeId = employeeId;
 }
 public Long getMetricid() {
     return metricid;
