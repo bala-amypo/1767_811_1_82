@@ -1,37 +1,32 @@
 package com.example.demo.controller;
 
-import com.example.demo.dto.AuthRequest;
-import com.example.demo.dto.AuthResponse;
-import com.example.demo.dto.RegisterRequest;
 import com.example.demo.model.UserAccount;
 import com.example.demo.service.UserAccountService;
-import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
 
 @RestController
 @RequestMapping("/auth")
-@Tag(name = "Authentication")
 public class AuthController {
 
-    private final UserAccountService userService;
+    private final UserAccountService userAccountService;
 
-    public AuthController(UserAccountService userService) {
-        this.userService = userService;
+    public AuthController(UserAccountService userAccountService) {
+        this.userAccountService = userAccountService;
     }
 
     @PostMapping("/register")
-    public UserAccount register(@RequestBody RegisterRequest request) {
-        UserAccount user = new UserAccount();
-        user.setUsername(request.getUsername());
-        user.setEmail(request.getEmail());
-        user.setPasswordHash(request.getPassword());
-
-        return userService.registerUser(user);
+    public ResponseEntity<UserAccount> register(@RequestBody UserAccount user) {
+        return ResponseEntity.ok(userAccountService.register(user));
     }
 
     @PostMapping("/login")
-    public AuthResponse login(@RequestBody AuthRequest request) {
-        // Login logic handled in service
-        return null; // token returned from service in real impl
+    public ResponseEntity<String> login(@RequestBody Map<String, String> request) {
+        String email = request.get("email");
+        String password = request.get("password");
+        String token = userAccountService.login(email, password);
+        return ResponseEntity.ok(token);
     }
 }

@@ -4,9 +4,7 @@ import com.example.demo.model.UserAccount;
 
 public interface UserAccountService {
 
-    UserAccount registerUser(UserAccount user);
+    UserAccount register(UserAccount user);
 
-    UserAccount findByEmail(String email);
-
-    UserAccount findById(Long id);
+    String login(String email, String password);
 }
