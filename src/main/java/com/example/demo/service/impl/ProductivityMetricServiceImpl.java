@@ -1,13 +1,17 @@
 package com.example.demo.service.impl;
 
-import com.example.demo.model.*;
-import com.example.demo.repository.*;
+import com.example.demo.model.ProductivityMetricRecord;
+import com.example.demo.repository.ProductivityMetricRecordRepository;
+import com.example.demo.repository.EmployeeProfileRepository;
+import com.example.demo.repository.AnomalyRuleRepository;
+import com.example.demo.repository.AnomalyFlagRecordRepository;
 import com.example.demo.service.ProductivityMetricService;
-import com.example.demo.util.ProductivityCalculator;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
+@Service
 public class ProductivityMetricServiceImpl implements ProductivityMetricService {
 
     private final ProductivityMetricRecordRepository metricRepo;
@@ -19,8 +23,8 @@ public class ProductivityMetricServiceImpl implements ProductivityMetricService 
             ProductivityMetricRecordRepository metricRepo,
             EmployeeProfileRepository employeeRepo,
             AnomalyRuleRepository ruleRepo,
-            AnomalyFlagRecordRepository flagRepo) {
-
+            AnomalyFlagRecordRepository flagRepo
+    ) {
         this.metricRepo = metricRepo;
         this.employeeRepo = employeeRepo;
         this.ruleRepo = ruleRepo;
@@ -28,70 +32,28 @@ public class ProductivityMetricServiceImpl implements ProductivityMetricService 
     }
 
     @Override
-    public ProductivityMetricRecord recordMetric(ProductivityMetricRecord metric) {
+    public ProductivityMetricRecord recordMetric(ProductivityMetricRecord record) {
 
-        EmployeeProfile employee = employeeRepo.findById(metric.getEmployeeId())
-                .orElseThrow(() -> new RuntimeException("Employee not found"));
-
-        if (!employee.getActive()) {
-            throw new RuntimeException("Employee not found");
-        }
-
-        boolean exists = metricRepo.findByEmployeeId(metric.getEmployeeId())
+        // Duplicate check
+        boolean exists = metricRepo
+                .findByEmployeeId(record.getEmployeeId())
                 .stream()
-                .anyMatch(m -> m.getDate().equals(metric.getDate()));
+                .anyMatch(m -> m.getDate().equals(record.getDate()));
 
         if (exists) {
-            throw new IllegalStateException("Metric already exists");
+            throw new IllegalStateException("Metric already exists for this date");
         }
 
-        double score = ProductivityCalculator.computeScore(
-                metric.getHoursLogged(),
-                metric.getTasksCompleted(),
-                metric.getMeetingsAttended()
-        );
+        // Compute score INLINE
+        double score =
+                record.getHoursLogged() * 10
+                        + record.getTasksCompleted() * 5
+                        + record.getMeetingsAttended() * 2;
 
-        metric.setProductivityScore(Math.min(100, Math.max(0, score)));
-        metric.setSubmittedAt(LocalDateTime.now());
+        record.setProductivityScore(score);
+        record.setSubmittedAt(LocalDateTime.now());
 
-        ProductivityMetricRecord saved = metricRepo.save(metric);
-
-        ruleRepo.findByActiveTrue().forEach(rule -> {
-            if (saved.getProductivityScore() < rule.getThresholdValue()) {
-                AnomalyFlagRecord flag = new AnomalyFlagRecord(
-                        null,
-                        saved.getEmployeeId(),
-                        saved.getId(),
-                        rule.getRuleCode(),
-                        "HIGH",
-                        "Threshold breached",
-                        LocalDateTime.now(),
-                        false
-                );
-                flagRepo.save(flag);
-            }
-        });
-
-        return saved;
-    }
-
-    @Override
-    public ProductivityMetricRecord updateMetric(Long id, ProductivityMetricRecord updated) {
-        ProductivityMetricRecord existing = getMetricById(id);
-
-        existing.setHoursLogged(updated.getHoursLogged());
-        existing.setTasksCompleted(updated.getTasksCompleted());
-        existing.setMeetingsAttended(updated.getMeetingsAttended());
-
-        double score = ProductivityCalculator.computeScore(
-                updated.getHoursLogged(),
-                updated.getTasksCompleted(),
-                updated.getMeetingsAttended()
-        );
-
-        existing.setProductivityScore(Math.min(100, Math.max(0, score)));
-
-        return metricRepo.save(existing);
+        return metricRepo.save(record);
     }
 
     @Override
