@@ -5,15 +5,15 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.model.ProductivityMetricRecord;
-import com.example.demo.repository.ProductivityMetricRepository;
+import com.example.demo.repository.ProductivityMetricRecordRepository;
 import com.example.demo.service.ProductivityMetricService;
 
 @Service
 public class ProductivityMetricServiceImpl implements ProductivityMetricService {
 
-    private final ProductivityMetricRepository metricRepository;
+    private final ProductivityMetricRecordRepository metricRepository;
 
-    public ProductivityMetricServiceImpl(ProductivityMetricRepository metricRepository) {
+    public ProductivityMetricServiceImpl(ProductivityMetricRecordRepository metricRepository) {
         this.metricRepository = metricRepository;
     }
 

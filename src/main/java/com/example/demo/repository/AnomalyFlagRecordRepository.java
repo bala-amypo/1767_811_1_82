@@ -5,7 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
-public interface AnomalyFlagRepository
+public interface AnomalyFlagRecordRepository
         extends JpaRepository<AnomalyFlagRecord, Long> {
 
     List<AnomalyFlagRecord> findByEmployeeId(Long employeeId);
