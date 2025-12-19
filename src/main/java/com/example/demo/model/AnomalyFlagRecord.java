@@ -1,7 +1,12 @@
 package com.example.demo.model;
 
-import jakarta.persistence.*;
 import java.time.LocalDateTime;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.PrePersist;
 
 @Entity
 public class AnomalyFlagRecord {
@@ -19,10 +24,20 @@ public class AnomalyFlagRecord {
     private Boolean resolved = false;
 
     public AnomalyFlagRecord() {
+    }
+
+    @PrePersist
+    protected void onCreate() {
         this.flaggedAt = LocalDateTime.now();
     }
 
-    // ✅ REQUIRED GETTERS / SETTERS
+
+    public Long getId() {
+        return id;
+    }
+    public void setId(Long id){
+        this.id=id;
+    }
 
     public Long getEmployeeId() {
         return employeeId;
@@ -39,6 +54,35 @@ public class AnomalyFlagRecord {
     public void setMetricId(Long metricId) {
         this.metricId = metricId;
     }
+
+    public String getRuleCode() {
+        return ruleCode;
+    }
+
+    public void setRuleCode(String ruleCode) {
+        this.ruleCode = ruleCode;
+    }
+
+    public String getSeverity() {
+        return severity;
+    }
+
+    public void setSeverity(String severity) {
+        this.severity = severity;
+    }
+
+    public String getDetails() {
+        return details;
+    }
+
+    public void setDetails(String details) {
+        this.details = details;
+    }
+
+    public LocalDateTime getFlaggedAt() {
+        return flaggedAt;
+    }
+    
 
     public Boolean getResolved() {
         return resolved;
