@@ -1,15 +1,19 @@
 package com.example.demo.controller;
 
-import com.example.demo.model.EmployeeProfile;
-import com.example.demo.service.EmployeeProfileService;
-import io.swagger.v3.oas.annotations.tags.Tag;
-import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.example.demo.model.EmployeeProfile;
+import com.example.demo.service.EmployeeProfileService;
+
 @RestController
-@RequestMapping("/api/employees")
-@Tag(name = "Employees")
+@RequestMapping("/employees")
 public class EmployeeProfileController {
 
     private final EmployeeProfileService employeeService;
@@ -19,28 +23,17 @@ public class EmployeeProfileController {
     }
 
     @PostMapping
-    public EmployeeProfile create(@RequestBody EmployeeProfile profile) {
-        return employeeService.createEmployee(profile);
+    public EmployeeProfile saveEmployee(@RequestBody EmployeeProfile employee) {
+        return employeeService.saveEmployee(employee);
     }
 
     @GetMapping("/{id}")
-    public EmployeeProfile getById(@PathVariable Long id) {
+    public EmployeeProfile getEmployee(@PathVariable Long id) {
         return employeeService.getEmployeeById(id);
     }
 
     @GetMapping
-    public List<EmployeeProfile> getAll() {
+    public List<EmployeeProfile> getAllEmployees() {
         return employeeService.getAllEmployees();
-    }
-
-    @PutMapping("/{id}")
-    public EmployeeProfile updateStatus(@PathVariable Long id,
-                                        @RequestParam boolean active) {
-        return employeeService.updateEmployeeStatus(id, active);
-    }
-
-    @GetMapping("/lookup/{employeeId}")
-    public EmployeeProfile lookup(@PathVariable String employeeId) {
-        return employeeService.findByEmployeeId(employeeId);
     }
 }
