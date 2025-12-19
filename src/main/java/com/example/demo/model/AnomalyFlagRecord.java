@@ -11,7 +11,7 @@ import jakarta.persistence.GenerationType;
 public class AnomalyFlagRecord {
 @Id
 @GeneratedValue(strategy =GenerationType.IDENTITY)
-private Long id;
+private Long Id;
 private Long employeeid;
 private Long metricid;
 private String ruleCode;
