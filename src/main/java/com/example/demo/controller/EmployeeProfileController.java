@@ -1,115 +1,46 @@
-package com.example.demo.model;
+package com.example.demo.controller;
 
-import java.time.LocalDateTime;
+import com.example.demo.model.EmployeeProfile;
+import com.example.demo.service.EmployeeProfileService;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.web.bind.annotation.*;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.PrePersist;
-import jakarta.persistence.GenerationType;
+import java.util.List;
 
+@RestController
+@RequestMapping("/api/employees")
+@Tag(name = "Employees")
+public class EmployeeProfileController {
 
+    private final EmployeeProfileService employeeService;
 
-@Entity
-public class EmployeeProfile {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    @Column(unique  =true)
-    private String employeeId;
-    private String fullname;
-    @Column(unique  =true)
-
-    private String email;
-    private String teamName;
-    private String role;
-    private Boolean active;
-    private LocalDateTime createdAt ;
-
-    public EmployeeProfile(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
+    public EmployeeProfileController(EmployeeProfileService employeeService) {
+        this.employeeService = employeeService;
     }
 
-    public EmployeeProfile(Long id, String employeeId, String fullname, String email, String teamName, String role,
-            Boolean active, LocalDateTime createdAt) {
-        this.id = id;
-        this.employeeId = employeeId;
-        this.fullname = fullname;
-        this.email = email;
-        this.teamName = teamName;
-        this.role = role;
-        this.active = active;
-        this.createdAt = createdAt;
-    }
-    @PrePersist
-public void onCreate(){
-    createdAt=LocalDateTime.now();
-}
-    public Long getId() {
-        return id;
+    @PostMapping
+    public EmployeeProfile create(@RequestBody EmployeeProfile profile) {
+        return employeeService.createEmployee(profile);
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    @GetMapping("/{id}")
+    public EmployeeProfile getById(@PathVariable Long id) {
+        return employeeService.getEmployeeById(id);
     }
 
-    public String getEmployeeId() {
-        return employeeId;
+    @GetMapping
+    public List<EmployeeProfile> getAll() {
+        return employeeService.getAllEmployees();
     }
 
-    public void setEmployeeId(String employeeId) {
-        this.employeeId = employeeId;
+    @PutMapping("/{id}")
+    public EmployeeProfile updateStatus(@PathVariable Long id,
+                                        @RequestParam boolean active) {
+        return employeeService.updateEmployeeStatus(id, active);
     }
 
-    public String getFullname() {
-        return fullname;
+    @GetMapping("/lookup/{employeeId}")
+    public EmployeeProfile lookup(@PathVariable String employeeId) {
+        return employeeService.findByEmployeeId(employeeId);
     }
-
-    public void setFullname(String fullname) {
-        this.fullname = fullname;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getTeamName() {
-        return teamName;
-    }
-
-    public void setTeamName(String teamName) {
-        this.teamName = teamName;
-    }
-
-    public String getRole() {
-        return role;
-    }
-
-    public void setRole(String role) {
-        this.role = role;
-    }
-
-    public Boolean getActive() {
-        return active;
-    }
-
-    public void setActive(Boolean active) {
-        this.active = active;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
-
-
-
 }

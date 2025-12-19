@@ -1,99 +1,46 @@
-package com.example.demo.model;
+package com.example.demo.controller;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
+import com.example.demo.model.ProductivityMetricRecord;
+import com.example.demo.service.ProductivityMetricService;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.web.bind.annotation.*;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
+import java.util.List;
 
-import jakarta.persistence.Id;
+@RestController
+@RequestMapping("/api/metrics")
+@Tag(name = "Productivity Metrics")
+public class ProductivityMetricController {
 
-@Entity
-public class ProductivityMetricRecord {
-@Id
-@GeneratedValue(strategy = GenerationType.IDENTITY)
-private Long id;
-private Long employeeId;
-private LocalDate date;
-private Double hoursLogged;
-private int tasksCompleted;
-private int metingsAttended;
-private Double productivityScore;
-private String rawDataJson;
-private LocalDateTime submittedAt;
+    private final ProductivityMetricService metricService;
 
+    public ProductivityMetricController(ProductivityMetricService metricService) {
+        this.metricService = metricService;
+    }
 
-public ProductivityMetricRecord(LocalDateTime submittedAt) {
-    this.submittedAt = submittedAt;
-}
+    @PostMapping
+    public ProductivityMetricRecord submit(@RequestBody ProductivityMetricRecord record) {
+        return metricService.recordMetric(record);
+    }
 
-public ProductivityMetricRecord(Long id, Long employeeId, LocalDate date, Double hoursLogged, int tasksCompleted,
-        int metingsAttended, Double productivityScore, String rawDataJson, LocalDateTime submittedAt) {
-    this.id = id;
-    this.employeeId = employeeId;
-    this.date = date;
-    this.hoursLogged = hoursLogged;
-    this.tasksCompleted = tasksCompleted;
-    this.metingsAttended = metingsAttended;
-    this.productivityScore = productivityScore;
-    this.rawDataJson = rawDataJson;
-    this.submittedAt = submittedAt;
-}
+    @PutMapping("/{id}")
+    public ProductivityMetricRecord update(@PathVariable Long id,
+                                           @RequestBody ProductivityMetricRecord updated) {
+        return metricService.updateMetric(id, updated);
+    }
 
-public Long getId() {
-    return id;
-}
-public void setId(Long id) {
-    this.id = id;
-}
-public Long getEmployeeId() {
-    return employeeId;
-}
-public void setEmployeeId(Long employeeId) {
-    this.employeeId = employeeId;
-}
-public LocalDate getDate() {
-    return date;
-}
-public void setDate(LocalDate date) {
-    this.date = date;
-}
-public Double getHoursLogged() {
-    return hoursLogged;
-}
-public void setHoursLogged(Double hoursLogged) {
-    this.hoursLogged = hoursLogged;
-}
-public int getTasksCompleted() {
-    return tasksCompleted;
-}
-public void setTasksCompleted(int tasksCompleted) {
-    this.tasksCompleted = tasksCompleted;
-}
-public int getMetingsAttended() {
-    return metingsAttended;
-}
-public void setMetingsAttended(int metingsAttended) {
-    this.metingsAttended = metingsAttended;
-}
-public Double getProductivityScore() {
-    return productivityScore;
-}
-public void setProductivityScore(Double productivityScore) {
-    this.productivityScore = productivityScore;
-}
-public String getRawDataJson() {
-    return rawDataJson;
-}
-public void setRawDataJson(String rawDataJson) {
-    this.rawDataJson = rawDataJson;
-}
-public LocalDateTime getSubmittedAt() {
-    return submittedAt;
-}
-public void setSubmittedAt(LocalDateTime submittedAt) {
-    this.submittedAt = submittedAt;
-}
+    @GetMapping("/employee/{employeeId}")
+    public List<ProductivityMetricRecord> getByEmployee(@PathVariable Long employeeId) {
+        return metricService.getMetricsByEmployee(employeeId);
+    }
 
+    @GetMapping("/{id}")
+    public ProductivityMetricRecord getById(@PathVariable Long id) {
+        return metricService.getMetricById(id);
+    }
+
+    @GetMapping
+    public List<ProductivityMetricRecord> getAll() {
+        return metricService.getAllMetrics();
+    }
 }
