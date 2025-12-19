@@ -1,18 +1,19 @@
 package com.example.demo.service.impl;
 
-import com.example.demo.model.TeamSummaryRecord;
-import com.example.demo.repository.TeamSummaryRepository;
-import com.example.demo.service.TeamSummaryService;
+import java.time.LocalDate;
+
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
+import com.example.demo.model.TeamSummaryRecord;
+import com.example.demo.repository.TeamSummaryRecordRepository;
+import com.example.demo.service.TeamSummaryService;
 
 @Service
 public class TeamSummaryServiceImpl implements TeamSummaryService {
 
-    private final TeamSummaryRepository summaryRepository;
+    private final TeamSummaryRecordRepository summaryRepository;
 
-    public TeamSummaryServiceImpl(TeamSummaryRepository summaryRepository) {
+    public TeamSummaryServiceImpl(TeamSummaryRecordRepository summaryRepository) {
         this.summaryRepository = summaryRepository;
     }
 

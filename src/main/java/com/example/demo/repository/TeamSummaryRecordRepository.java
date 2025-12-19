@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.time.LocalDate;
 import java.util.Optional;
 
-public interface TeamSummaryRepository
+public interface TeamSummaryRecordRepository
         extends JpaRepository<TeamSummaryRecord, Long> {
 
     Optional<TeamSummaryRecord> findByTeamNameAndSummaryDate(
