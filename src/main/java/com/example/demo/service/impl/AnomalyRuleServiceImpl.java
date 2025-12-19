@@ -3,50 +3,26 @@ package com.example.demo.service.impl;
 import com.example.demo.model.AnomalyRule;
 import com.example.demo.repository.AnomalyRuleRepository;
 import com.example.demo.service.AnomalyRuleService;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class AnomalyRuleServiceImpl implements AnomalyRuleService {
 
-    private final AnomalyRuleRepository repository;
+    private final AnomalyRuleRepository ruleRepository;
 
-    public AnomalyRuleServiceImpl(AnomalyRuleRepository repository) {
-        this.repository = repository;
+    public AnomalyRuleServiceImpl(AnomalyRuleRepository ruleRepository) {
+        this.ruleRepository = ruleRepository;
     }
 
     @Override
-    public AnomalyRule createRule(AnomalyRule rule) {
-        return repository.save(rule);
-    }
-
-    @Override
-    public AnomalyRule updateRule(Long id, AnomalyRule updatedRule) {
-        AnomalyRule rule = repository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Rule not found"));
-
-        rule.setDescription(updatedRule.getDescription());
-        rule.setThresholdType(updatedRule.getThresholdType());
-        rule.setThresholdValue(updatedRule.getThresholdValue());
-        rule.setActive(updatedRule.getActive());
-
-        return repository.save(rule);
+    public AnomalyRule saveRule(AnomalyRule rule) {
+        return ruleRepository.save(rule);
     }
 
     @Override
     public List<AnomalyRule> getActiveRules() {
-        return repository.findByActiveTrue();
-    }
-
-    @Override
-    public AnomalyRule getRuleByCode(String ruleCode) {
-        return repository.findAll().stream()
-                .filter(r -> r.getRuleCode().equals(ruleCode))
-                .findFirst()
-                .orElseThrow(() -> new RuntimeException("Rule not found"));
-    }
-
-    @Override
-    public List<AnomalyRule> getAllRules() {
-        return repository.findAll();
+        return ruleRepository.findByActiveTrue();
     }
 }
