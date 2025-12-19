@@ -4,36 +4,39 @@ import com.example.demo.model.UserAccount;
 import com.example.demo.repository.UserAccountRepository;
 import com.example.demo.service.UserAccountService;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+
+@Service
 public class UserAccountServiceImpl implements UserAccountService {
 
     private final UserAccountRepository repository;
     private final PasswordEncoder passwordEncoder;
 
-    // REQUIRED constructor
-    public UserAccountServiceImpl(
-            UserAccountRepository repository,
-            PasswordEncoder passwordEncoder) {
-
+    public UserAccountServiceImpl(UserAccountRepository repository,
+                                  PasswordEncoder passwordEncoder) {
         this.repository = repository;
         this.passwordEncoder = passwordEncoder;
     }
 
     @Override
-    public UserAccount registerUser(UserAccount user) {
+    public UserAccount register(UserAccount user) {
         user.setPasswordHash(passwordEncoder.encode(user.getPasswordHash()));
+        user.setCreatedAt(LocalDateTime.now());
         return repository.save(user);
     }
 
     @Override
-    public UserAccount findByEmail(String email) {
-        return repository.findByEmail(email)
+    public String login(String email, String password) {
+        UserAccount user = repository.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException("User not found"));
-    }
 
-    @Override
-    public UserAccount findById(Long id) {
-        return repository.findById(id)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+        if (!passwordEncoder.matches(password, user.getPasswordHash())) {
+            throw new RuntimeException("Invalid credentials");
+        }
+
+        // TEMP TOKEN (later JWT)
+        return "LOGIN_SUCCESS";
     }
 }
