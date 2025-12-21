@@ -1,19 +1,13 @@
 package com.example.demo.controller;
 
-import java.util.List;
-
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
 import com.example.demo.model.ProductivityMetricRecord;
 import com.example.demo.service.ProductivityMetricService;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
-@RequestMapping("/productivity")
+@RequestMapping("/api/metrics")
 public class ProductivityMetricController {
 
     private final ProductivityMetricService productivityService;
@@ -22,15 +16,37 @@ public class ProductivityMetricController {
         this.productivityService = productivityService;
     }
 
+    // POST /api/metrics – Record metric
     @PostMapping
-    public ProductivityMetricRecord saveMetric(
+    public ProductivityMetricRecord recordMetric(
             @RequestBody ProductivityMetricRecord record) {
-        return productivityService.saveMetric(record);
+        return productivityService.recordMetric(record);
     }
 
+    // PUT /api/metrics/{id} – Update metric
+    @PutMapping("/{id}")
+    public ProductivityMetricRecord updateMetric(
+            @PathVariable Long id,
+            @RequestBody ProductivityMetricRecord record) {
+        return productivityService.updateMetric(id, record);
+    }
+
+    // GET /api/metrics/employee/{employeeId} – Get by employee
     @GetMapping("/employee/{employeeId}")
     public List<ProductivityMetricRecord> getMetricsByEmployee(
             @PathVariable Long employeeId) {
         return productivityService.getMetricsByEmployee(employeeId);
+    }
+
+    // GET /api/metrics/{id} – Get by id
+    @GetMapping("/{id}")
+    public ProductivityMetricRecord getMetricById(@PathVariable Long id) {
+        return productivityService.getMetricById(id);
+    }
+
+    // GET /api/metrics – List all
+    @GetMapping
+    public List<ProductivityMetricRecord> getAllMetrics() {
+        return productivityService.getAllMetrics();
     }
 }
