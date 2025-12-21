@@ -1,42 +1,43 @@
 package com.example.demo.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(
-    uniqueConstraints = {
-        @UniqueConstraint(columnNames = {"employeeId", "date"})
-    }
-)
+@Table(name = "productivity_metrics", uniqueConstraints = @UniqueConstraint(columnNames = {"employee_id", "date"}))
 public class ProductivityMetricRecord {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotNull
+    @Column(name = "employee_id")
     private Long employeeId;
+
+    @NotNull
     private LocalDate date;
+
+    @Min(0)
     private Double hoursLogged;
+
+    @Min(0)
     private Integer tasksCompleted;
+
+    @Min(0)
     private Integer meetingsAttended;
+
     private Double productivityScore;
 
-    @Lob
     private String rawDataJson;
 
-    private LocalDateTime submittedAt;
+    private LocalDateTime submittedAt = LocalDateTime.now();
 
-    public ProductivityMetricRecord() {
-        this.submittedAt = LocalDateTime.now();
-    }
+    public ProductivityMetricRecord() {}
 
-    public ProductivityMetricRecord(Long id, Long employeeId, LocalDate date,
-                                    Double hoursLogged, Integer tasksCompleted,
-                                    Integer meetingsAttended, Double productivityScore,
-                                    String rawDataJson, LocalDateTime submittedAt) {
-        this.id = id;
+    public ProductivityMetricRecord(Long employeeId, LocalDate date, Double hoursLogged, Integer tasksCompleted, Integer meetingsAttended, Double productivityScore, String rawDataJson) {
         this.employeeId = employeeId;
         this.date = date;
         this.hoursLogged = hoursLogged;
@@ -44,9 +45,10 @@ public class ProductivityMetricRecord {
         this.meetingsAttended = meetingsAttended;
         this.productivityScore = productivityScore;
         this.rawDataJson = rawDataJson;
-        this.submittedAt = submittedAt;
+        this.submittedAt = LocalDateTime.now();
     }
 
+    // Getters and Setters
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 

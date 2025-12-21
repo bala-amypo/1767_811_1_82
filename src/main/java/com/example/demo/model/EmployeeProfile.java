@@ -1,115 +1,73 @@
 package com.example.demo.model;
 
+import jakarta.persistence.*;
+import jakarta.validation.constraints.*;
 import java.time.LocalDateTime;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.PrePersist;
-
-
 @Entity
+@Table(name = "employee_profiles")
 public class EmployeeProfile {
+
     @Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column (unique = true)
+
+    @NotBlank(message = "Employee ID is required")
+    @Column(unique = true, nullable = false)
     private String employeeId;
+
+    @NotBlank(message = "Full name is required")
     private String fullName;
-    @Column (unique = true)
 
+    @Email(message = "Email should be valid")
+    @NotBlank(message = "Email is required")
+    @Column(unique = true, nullable = false)
     private String email;
+
+    @NotBlank(message = "Team name is required")
     private String teamName;
+
+    @NotBlank(message = "Role is required")
     private String role;
-    private Boolean active;
-    private LocalDateTime createdAt;
 
-    public EmployeeProfile() {
-    }
+    private Boolean active = true;
 
-    public EmployeeProfile(Boolean active, String email, String employeeId, String fullName, Long id, String role, String teamName) {
-        this.active = active;
-        this.email = email;
+    private LocalDateTime createdAt = LocalDateTime.now();
+
+    public EmployeeProfile() {}
+
+    public EmployeeProfile(String employeeId, String fullName, String email, String teamName, String role) {
         this.employeeId = employeeId;
         this.fullName = fullName;
-        this.id = id;
-        this.role = role;
-        this.teamName = teamName;
-    }
-    @PrePersist
-    protected void onCreate(){
-        this.createdAt=LocalDateTime.now();
-    }
-
-
-    public Long getId() {
-        return id;
-    }
-
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getEmployeeId() {
-        return employeeId;
-    }
-
-    public void setEmployeeId(String employeeId) {
-        this.employeeId = employeeId;
-    }
-
-    public String getFullName() {
-        return fullName;
-    }
-
-    public void setFullName(String fullName) {
-        this.fullName = fullName;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
         this.email = email;
-    }
-
-    public String getTeamName() {
-        return teamName;
-    }
-
-    public void setTeamName(String teamName) {
         this.teamName = teamName;
-    }
-
-    public String getRole() {
-        return role;
-    }
-
-    public void setRole(String role) {
         this.role = role;
+        this.active = true;
+        this.createdAt = LocalDateTime.now();
     }
 
-    public Boolean getActive() {
-        return active;
-    }
+    // Getters and Setters
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
 
-    public void setActive(Boolean active) {
-        this.active = active;
-    }
+    public String getEmployeeId() { return employeeId; }
+    public void setEmployeeId(String employeeId) { this.employeeId = employeeId; }
 
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
+    public String getFullName() { return fullName; }
+    public void setFullName(String fullName) { this.fullName = fullName; }
 
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
-    
-    
+    public String getEmail() { return email; }
+    public void setEmail(String email) { this.email = email; }
 
+    public String getTeamName() { return teamName; }
+    public void setTeamName(String teamName) { this.teamName = teamName; }
 
+    public String getRole() { return role; }
+    public void setRole(String role) { this.role = role; }
+
+    public Boolean getActive() { return active; }
+    public void setActive(Boolean active) { this.active = active; }
+
+    public LocalDateTime getCreatedAt() { return createdAt; }
+    public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
 }
