@@ -11,9 +11,9 @@ import java.util.Optional;
 @Service
 public class TeamSummaryServiceImpl implements TeamSummaryService {
 
-    private final TeamSummaryRepository repository;
+    private final TeamSummaryRecordRepository repository;
 
-    public TeamSummaryServiceImpl(TeamSummaryRepository repository) {
+    public TeamSummaryServiceImpl(TeamSummaryRecordRepository repository) {
         this.repository = repository;
     }
 
