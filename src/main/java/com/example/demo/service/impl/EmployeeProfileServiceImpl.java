@@ -35,7 +35,7 @@ public class EmployeeProfileServiceImpl implements EmployeeProfileService {
     @Override
     public EmployeeProfile updateEmployeeStatus(Long id, String status) {
         EmployeeProfile employee = getEmployeeById(id);
-        employee.setStatus(status);
+        employee.setActive(true);
         return employeeRepository.save(employee);
     }
 
