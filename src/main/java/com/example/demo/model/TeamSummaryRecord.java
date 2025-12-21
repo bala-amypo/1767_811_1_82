@@ -1,47 +1,47 @@
 package com.example.demo.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(
-    uniqueConstraints = {
-        @UniqueConstraint(columnNames = {"teamName", "summaryDate"})
-    }
-)
+@Table(name = "team_summaries")
 public class TeamSummaryRecord {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotBlank
     private String teamName;
+
+    @NotNull
     private LocalDate summaryDate;
+
     private Double avgHoursLogged;
+
     private Double avgTasksCompleted;
+
     private Double avgScore;
+
     private Integer anomalyCount;
-    private LocalDateTime generatedAt;
 
-    public TeamSummaryRecord() {
-        this.generatedAt = LocalDateTime.now();
-    }
+    private LocalDateTime generatedAt = LocalDateTime.now();
 
-    public TeamSummaryRecord(Long id, String teamName, LocalDate summaryDate,
-                             Double avgHoursLogged, Double avgTasksCompleted,
-                             Double avgScore, Integer anomalyCount,
-                             LocalDateTime generatedAt) {
-        this.id = id;
+    public TeamSummaryRecord() {}
+
+    public TeamSummaryRecord(String teamName, LocalDate summaryDate, Double avgHoursLogged, Double avgTasksCompleted, Double avgScore, Integer anomalyCount) {
         this.teamName = teamName;
         this.summaryDate = summaryDate;
         this.avgHoursLogged = avgHoursLogged;
         this.avgTasksCompleted = avgTasksCompleted;
         this.avgScore = avgScore;
         this.anomalyCount = anomalyCount;
-        this.generatedAt = generatedAt;
+        this.generatedAt = LocalDateTime.now();
     }
 
+    // Getters and Setters
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 
