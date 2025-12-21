@@ -3,7 +3,6 @@ package com.example.demo.controller;
 import com.example.demo.model.EmployeeProfile;
 import com.example.demo.service.EmployeeProfileService;
 import jakarta.validation.Valid;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,39 +17,46 @@ public class EmployeeProfileController {
         this.employeeService = employeeService;
     }
 
-    // POST /api/employees – Create employee
+    /**
+     * POST /api/employees – Create employee
+     * Validation is triggered using @Valid. If a field is blank or invalid,
+     * MethodArgumentNotValidException will be thrown and handled by RestExceptionHandler.
+     */
     @PostMapping
-    public ResponseEntity<EmployeeProfile> createEmployee(@Valid @RequestBody EmployeeProfile employee) {
-        EmployeeProfile savedEmployee = employeeService.createEmployee(employee);
-        return ResponseEntity.ok(savedEmployee);
+    public EmployeeProfile createEmployee(@Valid @RequestBody EmployeeProfile employee) {
+        return employeeService.createEmployee(employee);
     }
 
-    // GET /api/employees/{id} – Get by id
+    /**
+     * GET /api/employees/{id} – Get employee by ID
+     */
     @GetMapping("/{id}")
-    public ResponseEntity<EmployeeProfile> getEmployeeById(@PathVariable Long id) {
-        EmployeeProfile employee = employeeService.getEmployeeById(id);
-        return ResponseEntity.ok(employee);
+    public EmployeeProfile getEmployeeById(@PathVariable Long id) {
+        return employeeService.getEmployeeById(id);
     }
 
-    // GET /api/employees – List all
+    /**
+     * GET /api/employees – List all employees
+     */
     @GetMapping
-    public ResponseEntity<List<EmployeeProfile>> getAllEmployees() {
-        List<EmployeeProfile> employees = employeeService.getAllEmployees();
-        return ResponseEntity.ok(employees);
+    public List<EmployeeProfile> getAllEmployees() {
+        return employeeService.getAllEmployees();
     }
 
-    // PUT /api/employees/{id}/status – Update status (QP requirement)
+    /**
+     * PUT /api/employees/{id}/status – Update employee status
+     */
     @PutMapping("/{id}/status")
-    public ResponseEntity<EmployeeProfile> updateStatus(@PathVariable Long id,
-                                                        @RequestParam String status) {
-        EmployeeProfile updatedEmployee = employeeService.updateEmployeeStatus(id, status);
-        return ResponseEntity.ok(updatedEmployee);
+    public EmployeeProfile updateStatus(@PathVariable Long id,
+                                        @RequestParam String status) {
+        return employeeService.updateEmployeeStatus(id, status);
     }
 
-    // GET /api/employees/lookup/{employeeId} – Lookup by employeeId
+    /**
+     * GET /api/employees/lookup/{employeeId} – Lookup by employeeId
+     */
     @GetMapping("/lookup/{employeeId}")
-    public ResponseEntity<EmployeeProfile> getByEmployeeId(@PathVariable String employeeId) {
-        EmployeeProfile employee = employeeService.getByEmployeeId(employeeId);
-        return ResponseEntity.ok(employee);
+    public EmployeeProfile getByEmployeeId(@PathVariable String employeeId) {
+        return employeeService.getByEmployeeId(employeeId);
     }
 }
