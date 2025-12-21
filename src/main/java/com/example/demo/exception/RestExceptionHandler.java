@@ -2,8 +2,6 @@ package com.example.demo.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.AccessDeniedException;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -40,26 +38,6 @@ public class RestExceptionHandler {
         body.put("message", validationErrors);
 
         return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
-    }
-
-    @ExceptionHandler(BadCredentialsException.class)
-    public ResponseEntity<Object> handleBadCredentials(BadCredentialsException ex) {
-        Map<String, Object> body = new HashMap<>();
-        body.put("timestamp", LocalDateTime.now());
-        body.put("status", HttpStatus.UNAUTHORIZED.value());
-        body.put("error", "Unauthorized");
-        body.put("message", "Invalid username or password");
-        return new ResponseEntity<>(body, HttpStatus.UNAUTHORIZED);
-    }
-
-    @ExceptionHandler(AccessDeniedException.class)
-    public ResponseEntity<Object> handleAccessDenied(AccessDeniedException ex) {
-        Map<String, Object> body = new HashMap<>();
-        body.put("timestamp", LocalDateTime.now());
-        body.put("status", HttpStatus.FORBIDDEN.value());
-        body.put("error", "Forbidden");
-        body.put("message", "You do not have permission to access this resource");
-        return new ResponseEntity<>(body, HttpStatus.FORBIDDEN);
     }
 
     @ExceptionHandler(Exception.class)
