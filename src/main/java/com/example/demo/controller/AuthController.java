@@ -4,8 +4,6 @@ import com.example.demo.model.UserAccount;
 import com.example.demo.service.UserAccountService;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
@@ -21,8 +19,8 @@ public class AuthController {
         return userService.saveUser(userAccount);
     }
 
-    @GetMapping("/users")
-    public List<UserAccount> getAllUsers() {
-        return userService.getAllUsers();
+    @PostMapping("/login")
+    public UserAccount login(@RequestBody UserAccount userAccount) {
+        return userService.authenticateUser(userAccount.getUsername(), userAccount.getPassword());
     }
 }

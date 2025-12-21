@@ -6,7 +6,9 @@ import java.util.List;
 
 public interface UserAccountService {
 
-    UserAccount saveUser(UserAccount user);
+    UserAccount saveUser(UserAccount userAccount);
+
+    UserAccount authenticateUser(String username, String password);
 
     List<UserAccount> getAllUsers();
 }
