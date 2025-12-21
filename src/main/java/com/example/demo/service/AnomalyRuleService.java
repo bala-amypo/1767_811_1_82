@@ -6,7 +6,13 @@ import java.util.List;
 
 public interface AnomalyRuleService {
 
-    AnomalyRule saveRule(AnomalyRule rule);
+    AnomalyRule createRule(AnomalyRule rule);
+
+    AnomalyRule updateRule(Long id, AnomalyRule rule);
 
     List<AnomalyRule> getActiveRules();
+
+    AnomalyRule getRuleById(Long id);
+
+    List<AnomalyRule> getAllRules();
 }
