@@ -4,6 +4,9 @@ import com.example.demo.model.UserAccount;
 import com.example.demo.service.UserAccountService;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+import java.util.Optional;
+
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
@@ -21,6 +24,16 @@ public class AuthController {
 
     @PostMapping("/login")
     public UserAccount login(@RequestBody UserAccount userAccount) {
-        return userService.authenticateUser(userAccount.getUsername(), userAccount.getPasswordHash());
+        Optional<UserAccount> userOpt = userService.authenticateUser(
+                userAccount.getUsername(), 
+                userAccount.getPasswordHash()  // make sure your entity has getPasswordHash()
+        );
+
+        return userOpt.orElse(null); // or throw exception if user not found
+    }
+
+    @GetMapping("/users")
+    public List<UserAccount> getAllUsers() {
+        return userService.getAllUsers();
     }
 }
