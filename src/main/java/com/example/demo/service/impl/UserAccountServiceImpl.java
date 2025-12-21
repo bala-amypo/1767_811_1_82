@@ -24,7 +24,7 @@ public class UserAccountServiceImpl implements UserAccountService {
 
     @Override
     public UserAccount authenticateUser(String username, String password) {
-        Optional<UserAccount> user = userRepo.findByUsernameAndPassword(username, password);
+        Optional<UserAccount> user = userRepo.findByUsernameAndPassword(username, passwordHash);
         return user.orElse(null); // can throw exception if preferred
     }
 
