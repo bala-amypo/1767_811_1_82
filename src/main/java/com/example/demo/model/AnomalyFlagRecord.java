@@ -14,7 +14,7 @@ public class AnomalyFlagRecord {
 @GeneratedValue(strategy =GenerationType.IDENTITY)
 private Long id;
 private Long employeeId;
-private Long metricid;
+private Long metricId;
 private String ruleCode;
 private String severity;
 
@@ -24,11 +24,11 @@ private Boolean resolved =false;
 public AnomalyFlagRecord() {
 }
 
-public AnomalyFlagRecord(Long id, Long employeeid, Long metricid, String ruleCode, String severity, String details,
+public AnomalyFlagRecord(Long id, Long employeeid, Long metricId, String ruleCode, String severity, String details,
         LocalDateTime flaggedAt, Boolean resolved) {
     this.id = id;
     this.employeeId = employeeId;
-    this.metricid = metricid;
+    this.metricId = metricId;
     this.ruleCode = ruleCode;
     this.severity = severity;
     this.details = details;
@@ -45,14 +45,14 @@ public void setId(Long id) {
 public Long getEmployeeId() {
     return employeeId;
 }
-public void setEmployeeid(Long employeeId) {
+public void setEmployeeId(Long employeeId) {
     this.employeeId = employeeId;
 }
-public Long getMetricid() {
-    return metricid;
+public Long getMetricId() {
+    return metricId;
 }
-public void setMetricid(Long metricid) {
-    this.metricid = metricid;
+public void setMetricId(Long metricId) {
+    this.metricId = metricId;
 }
 public String getRuleCode() {
     return ruleCode;
