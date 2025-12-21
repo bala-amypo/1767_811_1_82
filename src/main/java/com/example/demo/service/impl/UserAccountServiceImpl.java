@@ -11,25 +11,26 @@ import java.util.Optional;
 @Service
 public class UserAccountServiceImpl implements UserAccountService {
 
-    private final UserAccountRepository userRepo;
+    private final UserAccountRepository userAccountRepository;
 
-    public UserAccountServiceImpl(UserAccountRepository userRepo) {
-        this.userRepo = userRepo;
+    public UserAccountServiceImpl(UserAccountRepository userAccountRepository) {
+        this.userAccountRepository = userAccountRepository;
     }
 
     @Override
     public UserAccount saveUser(UserAccount userAccount) {
-        return userRepo.save(userAccount);
-    }
-
-    @Override
-    public UserAccount authenticateUser(String username, String password) {
-        Optional<UserAccount> user = userRepo.findByUsernameAndPassword(username, passwordHash);
-        return user.orElse(null); // can throw exception if preferred
+        // Save user with passwordHash
+        return userAccountRepository.save(userAccount);
     }
 
     @Override
     public List<UserAccount> getAllUsers() {
-        return userRepo.findAll();
+        return userAccountRepository.findAll();
+    }
+
+    @Override
+    public Optional<UserAccount> authenticateUser(String username, String password) {
+        // Use repository method that uses passwordHash
+        return userAccountRepository.findByUsernameAndPasswordHash(username, password);
     }
 }
