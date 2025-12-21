@@ -15,10 +15,12 @@ public class AnomalyFlagController {
     public AnomalyFlagController(AnomalyFlagService anomalyFlagService) {
         this.anomalyFlagService = anomalyFlagService;
     }
+     
      @PostMapping
-    public AnomalyRule saveRule(@RequestBody AnomalyRule rule) {
-        return ruleService.saveRule(rule);
+    public AnomalyFlagController savRule(@RequestBody AnomalyFlagController rul) {
+        return anomalyFlagService.savRule(rul);
     }
+    
 
     @GetMapping("/unresolved")
     public List<AnomalyFlagRecord> getUnresolvedAnomalies() {
