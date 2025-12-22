@@ -1,5 +1,7 @@
 package com.example.demo.exception;
 
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -8,6 +10,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 @RestControllerAdvice
 public class RestExceptionHandler {
@@ -22,7 +25,7 @@ public class RestExceptionHandler {
         return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
     }
 
-    // Handle validation errors (e.g., @NotBlank, @Email)
+    // Handle Spring validation (@Valid on @RequestBody)
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Map<String, Object>> handleValidationErrors(MethodArgumentNotValidException ex) {
         Map<String, String> fieldErrors = new HashMap<>();
@@ -33,6 +36,23 @@ public class RestExceptionHandler {
         response.put("success", false);
         response.put("error", "Validation Failed");
         response.put("details", fieldErrors);
+
+        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+    }
+
+    // Handle JPA/Hibernate constraint violations
+    @ExceptionHandler(ConstraintViolationException.class)
+    public ResponseEntity<Map<String, Object>> handleConstraintViolation(ConstraintViolationException ex) {
+        Map<String, String> violations = new HashMap<>();
+        Set<ConstraintViolation<?>> constraintViolations = ex.getConstraintViolations();
+        for (ConstraintViolation<?> violation : constraintViolations) {
+            violations.put(violation.getPropertyPath().toString(), violation.getMessage());
+        }
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("success", false);
+        response.put("error", "Validation Failed");
+        response.put("details", violations);
 
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
