@@ -30,7 +30,7 @@ public class TeamSummaryServiceImpl implements TeamSummaryService {
     @Override
     public TeamSummaryRecord getSummaryById(Long id) {
         Optional<TeamSummaryRecord> summary = repository.findById(id);
-        return summary.orElse(null); // or throw exception if needed
+        return summary.orElse(null); 
     }
 
     @Override

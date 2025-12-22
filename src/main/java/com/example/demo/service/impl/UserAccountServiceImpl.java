@@ -19,7 +19,6 @@ public class UserAccountServiceImpl implements UserAccountService {
 
     @Override
     public UserAccount saveUser(UserAccount userAccount) {
-        // Save user with passwordHash
         return userAccountRepository.save(userAccount);
     }
 
@@ -30,7 +29,6 @@ public class UserAccountServiceImpl implements UserAccountService {
 
     @Override
     public Optional<UserAccount> authenticateUser(String username, String password) {
-        // Use repository method that uses passwordHash
         return userAccountRepository.findByUsernameAndPasswordHash(username, password);
     }
 }

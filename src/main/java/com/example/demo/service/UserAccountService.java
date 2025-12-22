@@ -9,6 +9,5 @@ public interface UserAccountService {
     UserAccount saveUser(UserAccount userAccount);
     List<UserAccount> getAllUsers();
 
-    // Make sure method signature matches
     Optional<UserAccount> authenticateUser(String username, String password);
 }
