@@ -11,15 +11,11 @@ import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Global exception handler for REST controllers
- */
+
 @RestControllerAdvice
 public class RestExceptionHandler {
 
-    /**
-     * Handles validation errors from @Valid
-     */
+    
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Map<String, Object>> handleValidationExceptions(MethodArgumentNotValidException ex) {
         Map<String, String> errors = new HashMap<>();
@@ -35,9 +31,7 @@ public class RestExceptionHandler {
         return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
     }
 
-    /**
-     * Handles ResourceNotFoundException
-     */
+   
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<Map<String, Object>> handleResourceNotFound(ResourceNotFoundException ex) {
         Map<String, Object> body = new HashMap<>();
@@ -48,9 +42,7 @@ public class RestExceptionHandler {
         return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
     }
 
-    /**
-     * Handles all uncaught exceptions
-     */
+   
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Map<String, Object>> handleAllExceptions(Exception ex) {
         Map<String, Object> body = new HashMap<>();

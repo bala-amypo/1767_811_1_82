@@ -18,7 +18,7 @@ public class AnomalyRule {
     private String description;
 
     @NotBlank(message = "Threshold type is required")
-    private String thresholdType; // e.g., ABSOLUTE or PERCENT
+    private String thresholdType; 
 
     @NotNull(message = "Threshold value is required")
     private Double thresholdValue;
@@ -35,7 +35,6 @@ public class AnomalyRule {
         this.active = true;
     }
 
-    // Getters and Setters
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 

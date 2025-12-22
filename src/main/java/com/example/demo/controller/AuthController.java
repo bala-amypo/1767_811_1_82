@@ -16,19 +16,17 @@ public class AuthController {
         this.userService = userService;
     }
 
-    // POST: Register a new user
     @PostMapping("/register")
     public UserAccount register(@RequestBody UserAccount userAccount) {
         return userService.saveUser(userAccount);
     }
 
-    // POST: Authenticate (login) a user
     @PostMapping("/login")
     public UserAccount login(@RequestBody UserAccount userAccount) {
         Optional<UserAccount> userOpt = userService.authenticateUser(
                 userAccount.getUsername(),
-                userAccount.getPasswordHash() // using passwordHash from entity
+                userAccount.getPasswordHash() 
         );
-        return userOpt.orElse(null); // returns null if authentication fails
+        return userOpt.orElse(null); 
     }
 }

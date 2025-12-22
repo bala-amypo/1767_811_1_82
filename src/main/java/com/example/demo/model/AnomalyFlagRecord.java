@@ -22,7 +22,7 @@ public class AnomalyFlagRecord {
     private String ruleCode;
 
     @NotBlank
-    private String severity; // e.g., LOW, MEDIUM, HIGH
+    private String severity; 
 
     private String details;
 
@@ -42,7 +42,6 @@ public class AnomalyFlagRecord {
         this.resolved = false;
     }
 
-    // Getters and Setters
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 
