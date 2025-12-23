@@ -13,7 +13,7 @@ public class AnomalyFlagController {
     private final AnomalyFlagService anomalyFlagService;
 
     public AnomalyFlagController(AnomalyFlagService anomalyFlagService) {
-        this.anomalyFlagService = anomalyFlagService;  
+        this.anomalyFlagService = anomalyFlagService;    
     }
 
     @PostMapping
