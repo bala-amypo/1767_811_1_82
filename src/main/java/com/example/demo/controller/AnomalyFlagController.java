@@ -14,6 +14,7 @@ public class AnomalyFlagController {
 
     public AnomalyFlagController(AnomalyFlagService anomalyFlagService) {
         this.anomalyFlagService = anomalyFlagService;    
+        
     }
 
     @PostMapping
