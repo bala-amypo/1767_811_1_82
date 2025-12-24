@@ -10,11 +10,7 @@ public class AuthRequest {
     @NotBlank
     private String password;
 
-    public AuthRequest() {}
-
-    public AuthRequest(String username, String password) {
-        this.username = username;
-        this.password = password;
+    public AuthRequest() {
     }
 
     public String getUsername() {
@@ -28,7 +24,7 @@ public class AuthRequest {
     public String getPassword() {
         return password;
     }
-
+    
     public void setPassword(String password) {
         this.password = password;
     }
