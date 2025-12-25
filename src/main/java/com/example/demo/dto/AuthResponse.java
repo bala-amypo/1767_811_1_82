@@ -1,17 +1,19 @@
 package com.example.demo.dto;
 
 public class AuthResponse {
-
     private String token;
-    private String tokenType = "Bearer";
+    private String tokenType;
 
-    public AuthResponse() {
-    }
+    // No-args constructor
+    public AuthResponse() {}
 
-    public AuthResponse(String token) {
+    // All-args constructor
+    public AuthResponse(String token, String tokenType) {
         this.token = token;
+        this.tokenType = tokenType;
     }
 
+    // Getters and setters
     public String getToken() {
         return token;
     }
