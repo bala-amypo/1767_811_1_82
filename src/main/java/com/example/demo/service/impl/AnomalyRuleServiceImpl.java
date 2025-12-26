@@ -4,35 +4,44 @@ import com.example.demo.model.AnomalyRule;
 import com.example.demo.repository.AnomalyRuleRepository;
 import com.example.demo.service.AnomalyRuleService;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
-@Transactional
 public class AnomalyRuleServiceImpl implements AnomalyRuleService {
 
-    private final AnomalyRuleRepository ruleRepo;
+    private final AnomalyRuleRepository ruleRepository;
 
-    public AnomalyRuleServiceImpl(AnomalyRuleRepository ruleRepo) {
-        this.ruleRepo = ruleRepo;
+    public AnomalyRuleServiceImpl(AnomalyRuleRepository ruleRepository) {
+        this.ruleRepository = ruleRepository;
     }
 
     @Override
     public AnomalyRule createRule(AnomalyRule rule) {
-        if (ruleRepo.findByRuleCode(rule.getRuleCode()).isPresent())
-            throw new IllegalStateException("Rule code exists");
-        return ruleRepo.save(rule);
+        return ruleRepository.save(rule);
     }
 
     @Override
-    public Optional<AnomalyRule> getRuleByCode(String ruleCode) {
-        return ruleRepo.findByRuleCode(ruleCode);
+    public AnomalyRule updateRule(Long id, AnomalyRule rule) {
+        AnomalyRule existingRule = ruleRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Rule not found"));
+        rule.setId(existingRule.getId());
+        return ruleRepository.save(rule);
     }
 
     @Override
     public List<AnomalyRule> getActiveRules() {
-        return ruleRepo.findByActiveTrue();
+        return ruleRepository.findByActiveTrue();
+    }
+
+    @Override
+    public AnomalyRule getRuleById(Long id) {
+        return ruleRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Rule not found"));
+    }
+
+    @Override
+    public List<AnomalyRule> getAllRules() {
+        return ruleRepository.findAll();
     }
 }

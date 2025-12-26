@@ -4,48 +4,44 @@ import com.example.demo.model.EmployeeProfile;
 import com.example.demo.repository.EmployeeProfileRepository;
 import com.example.demo.service.EmployeeProfileService;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
-@Transactional
 public class EmployeeProfileServiceImpl implements EmployeeProfileService {
 
-    private final EmployeeProfileRepository employeeRepo;
+    private final EmployeeProfileRepository employeeRepository;
 
-    public EmployeeProfileServiceImpl(EmployeeProfileRepository employeeRepo) {
-        this.employeeRepo = employeeRepo;
+    public EmployeeProfileServiceImpl(EmployeeProfileRepository employeeRepository) {
+        this.employeeRepository = employeeRepository;
     }
 
     @Override
-    public EmployeeProfile createEmployee(EmployeeProfile profile) {
-        Optional<EmployeeProfile> existing = employeeRepo.findByEmployeeId(profile.getEmployeeId());
-        if (existing.isPresent()) throw new IllegalStateException("Employee already exists");
-        return employeeRepo.save(profile);
+    public EmployeeProfile createEmployee(EmployeeProfile employee) {
+        return employeeRepository.save(employee);
     }
 
     @Override
     public EmployeeProfile getEmployeeById(Long id) {
-        return employeeRepo.findById(id)
+        return employeeRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Employee not found"));
     }
 
     @Override
-    public List<EmployeeProfile> getByTeam(String teamName) {
-        return employeeRepo.findByTeamName(teamName);
+    public List<EmployeeProfile> getAllEmployees() {
+        return employeeRepository.findAll();
     }
 
     @Override
-    public Optional<EmployeeProfile> findByEmployeeId(String employeeId) {
-        return employeeRepo.findByEmployeeId(employeeId);
+    public EmployeeProfile updateEmployeeStatus(Long id, String status) {
+        EmployeeProfile employee = getEmployeeById(id);
+        employee.setActive(true);
+        return employeeRepository.save(employee);
     }
 
     @Override
-    public EmployeeProfile updateEmployeeStatus(Long id, boolean active) {
-        EmployeeProfile emp = getEmployeeById(id);
-        emp.setActive(active);
-        return employeeRepo.save(emp);
+    public EmployeeProfile getByEmployeeId(String employeeId) {
+        return employeeRepository.findByEmployeeId(employeeId)
+                .orElseThrow(() -> new RuntimeException("Employee not found"));
     }
 }

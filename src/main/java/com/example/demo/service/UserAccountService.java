@@ -1,11 +1,13 @@
 package com.example.demo.service;
 
 import com.example.demo.model.UserAccount;
-import com.example.demo.dto.RegisterRequest;
-import com.example.demo.dto.AuthRequest;
-import com.example.demo.dto.AuthResponse;
+
+import java.util.List;
+import java.util.Optional;
 
 public interface UserAccountService {
-    UserAccount register(RegisterRequest request);
-    AuthResponse login(AuthRequest request);
+    UserAccount saveUser(UserAccount userAccount);
+    List<UserAccount> getAllUsers();
+
+    Optional<UserAccount> authenticateUser(String username, String password);
 }

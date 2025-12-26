@@ -1,53 +1,40 @@
 package com.example.demo.service.impl;
 
 import com.example.demo.model.TeamSummaryRecord;
-import com.example.demo.model.ProductivityMetricRecord;
-import com.example.demo.model.AnomalyFlagRecord;
-import com.example.demo.repository.TeamSummaryRepository;
-import com.example.demo.repository.ProductivityMetricRepository;
-import com.example.demo.repository.AnomalyFlagRecordRepository;
+import com.example.demo.repository.TeamSummaryRecordRepository;
 import com.example.demo.service.TeamSummaryService;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 @Service
-@Transactional
 public class TeamSummaryServiceImpl implements TeamSummaryService {
 
-    private final TeamSummaryRepository summaryRepo;
-    private final ProductivityMetricRepository metricRepo;
-    private final AnomalyFlagRecordRepository flagRepo;
+    private final TeamSummaryRecordRepository repository;
 
-    public TeamSummaryServiceImpl(TeamSummaryRepository summaryRepo,
-                                  ProductivityMetricRepository metricRepo,
-                                  AnomalyFlagRecordRepository flagRepo) {
-        this.summaryRepo = summaryRepo;
-        this.metricRepo = metricRepo;
-        this.flagRepo = flagRepo;
+    public TeamSummaryServiceImpl(TeamSummaryRecordRepository repository) {
+        this.repository = repository;
     }
 
     @Override
-    public TeamSummaryRecord generateSummary(String teamName, LocalDate date) {
-        List<ProductivityMetricRecord> metrics = metricRepo.findByEmployeeIdInTeam(teamName); // you may implement a custom query
-        List<AnomalyFlagRecord> anomalies = flagRepo.findByEmployeeIdInTeamUnresolved(teamName); // custom query
+    public TeamSummaryRecord saveTeamSummary(TeamSummaryRecord summary) {
+        return repository.save(summary);
+    }
 
-        double avgHours = metrics.stream().mapToDouble(ProductivityMetricRecord::getHoursLogged).average().orElse(0.0);
-        double avgTasks = metrics.stream().mapToInt(ProductivityMetricRecord::getTasksCompleted).average().orElse(0.0);
-        double avgScore = metrics.stream().mapToDouble(ProductivityMetricRecord::getProductivityScore).average().orElse(0.0);
-        int anomalyCount = anomalies.size();
+    @Override
+    public List<TeamSummaryRecord> getSummariesByTeam(String teamName) {
+        return repository.findByTeamName(teamName);
+    }
 
-        TeamSummaryRecord summary = new TeamSummaryRecord();
-        summary.setTeamName(teamName);
-        summary.setSummaryDate(date);
-        summary.setAvgHoursLogged(avgHours);
-        summary.setAvgTasksCompleted(avgTasks);
-        summary.setAvgScore(avgScore);
-        summary.setAnomalyCount(anomalyCount);
-        summary.setGeneratedAt(LocalDate.now().atStartOfDay());
+    @Override
+    public TeamSummaryRecord getSummaryById(Long id) {
+        Optional<TeamSummaryRecord> summary = repository.findById(id);
+        return summary.orElse(null); 
+    }
 
-        return summaryRepo.save(summary);
+    @Override
+    public List<TeamSummaryRecord> getAllSummaries() {
+        return repository.findAll();
     }
 }
