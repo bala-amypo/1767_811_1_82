@@ -1,8 +1,8 @@
 package com.example.demo.service;
 
 import com.example.demo.model.EmployeeProfile;
-
 import java.util.List;
+import java.util.Optional;
 
 public interface EmployeeProfileService {
 
@@ -12,7 +12,7 @@ public interface EmployeeProfileService {
 
     List<EmployeeProfile> getAllEmployees();
 
-    EmployeeProfile updateEmployeeStatus(Long id, String status);
+    Optional<EmployeeProfile> findByEmployeeId(String employeeId);
 
-    EmployeeProfile getByEmployeeId(String employeeId);
+    EmployeeProfile updateEmployeeStatus(Long id, boolean active);
 }
