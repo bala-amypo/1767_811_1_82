@@ -1,29 +1,20 @@
 package com.example.demo.dto;
 
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-
 public class EmployeeProfileDto {
 
-    @NotBlank
     private String employeeId;
-
-    @NotBlank
     private String fullName;
-
-    @Email
     private String email;
-
     private String teamName;
-    private String role;
+    private String title;
+    private Boolean active;
 
-    public EmployeeProfileDto() {
-    }
+    public EmployeeProfileDto() {}
 
     public String getEmployeeId() {
         return employeeId;
     }
-    
+
     public void setEmployeeId(String employeeId) {
         this.employeeId = employeeId;
     }
@@ -31,15 +22,15 @@ public class EmployeeProfileDto {
     public String getFullName() {
         return fullName;
     }
-    
+ 
     public void setFullName(String fullName) {
         this.fullName = fullName;
     }
-
+ 
     public String getEmail() {
         return email;
     }
-    
+ 
     public void setEmail(String email) {
         this.email = email;
     }
@@ -47,16 +38,24 @@ public class EmployeeProfileDto {
     public String getTeamName() {
         return teamName;
     }
-    
+ 
     public void setTeamName(String teamName) {
         this.teamName = teamName;
     }
 
-    public String getRole() {
-        return role;
+    public String getTitle() {
+        return title;
     }
-    
-    public void setRole(String role) {
-        this.role = role;
+ 
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public Boolean getActive() {
+        return active;
+    }
+ 
+    public void setActive(Boolean active) {
+        this.active = active;
     }
 }
