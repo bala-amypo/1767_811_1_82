@@ -4,11 +4,12 @@ import com.example.demo.model.EmployeeProfile;
 import com.example.demo.repository.EmployeeProfileRepository;
 import com.example.demo.service.EmployeeProfileService;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+
 
 import java.util.List;
-
+import java.util.Optional;
 @Service
+
 public class EmployeeProfileServiceImpl implements EmployeeProfileService {
 
     private final EmployeeProfileRepository repository;
@@ -18,25 +19,30 @@ public class EmployeeProfileServiceImpl implements EmployeeProfileService {
     }
 
     @Override
-    @Transactional
-    public EmployeeProfile save(EmployeeProfile employee) {
-        if (repository.existsByEmail(employee.getEmail())) {
-            throw new RuntimeException("Email already exists");
-        }
-        if (repository.existsByEmployeeId(employee.getEmployeeId())) {
-            throw new RuntimeException("Employee ID already exists");
-        }
+    public EmployeeProfile createEmployee(EmployeeProfile employee) {
         return repository.save(employee);
     }
 
     @Override
-    public List<EmployeeProfile> getAll() {
+    public EmployeeProfile getEmployeeById(Long id) {
+        return repository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Employee not found"));
+    }
+
+    @Override
+    public List<EmployeeProfile> getAllEmployees() {
         return repository.findAll();
     }
 
     @Override
-    public EmployeeProfile getByEmployeeId(String employeeId) {
-        return repository.findByEmployeeId(employeeId)
-                .orElseThrow(() -> new RuntimeException("Employee not found"));
+    public Optional<EmployeeProfile> findByEmployeeId(String employeeId) {
+        return repository.findByEmployeeId(employeeId);
+    }
+
+    @Override
+    public EmployeeProfile updateEmployeeStatus(Long id, boolean active) {
+        EmployeeProfile emp = getEmployeeById(id);
+        emp.setActive(active);
+        return repository.save(emp);
     }
 }
