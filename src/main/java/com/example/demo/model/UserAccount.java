@@ -1,20 +1,35 @@
 package com.example.demo.model;
 
 import jakarta.persistence.*;
+import java.time.LocalDateTime;
+import java.util.Set;
 
 @Entity
-@Table(name = "user_accounts")
+@Table(name = "users")
 public class UserAccount {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(unique = true, nullable = false)
     private String username;
+
+    @Column(unique = true, nullable = false)
     private String email;
+
     private String passwordHash;
 
-    // getters & setters
+    @ElementCollection(fetch = FetchType.EAGER)
+    private Set<String> role;
+
+    private LocalDateTime createdAt;
+
+    // Constructors
+    public UserAccount() {
+        this.createdAt = LocalDateTime.now();
+    }
+
+    // Getters and Setters
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 
@@ -26,4 +41,10 @@ public class UserAccount {
 
     public String getPasswordHash() { return passwordHash; }
     public void setPasswordHash(String passwordHash) { this.passwordHash = passwordHash; }
+
+    public Set<String> getRole() { return role; }
+    public void setRole(Set<String> role) { this.role = role; }
+
+    public LocalDateTime getCreatedAt() { return createdAt; }
+    public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
 }

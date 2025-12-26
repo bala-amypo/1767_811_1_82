@@ -6,23 +6,30 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "anomaly_flags")
 public class AnomalyFlagRecord {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private Long employeeId;
+
     private Long metricId;
+
     private String ruleCode;
-    private Boolean resolved = false;
+
+    private String severity;
+
+    private String details;
+
     private LocalDateTime flaggedAt;
 
-    @PrePersist
-    public void onCreate() {
+    private Boolean resolved = false;
+
+    // Constructors
+    public AnomalyFlagRecord() {
         this.flaggedAt = LocalDateTime.now();
     }
 
-    // getters & setters
+    // Getters and Setters
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 
@@ -35,9 +42,15 @@ public class AnomalyFlagRecord {
     public String getRuleCode() { return ruleCode; }
     public void setRuleCode(String ruleCode) { this.ruleCode = ruleCode; }
 
-    public Boolean getResolved() { return resolved; }
-    public void setResolved(Boolean resolved) { this.resolved = resolved; }
+    public String getSeverity() { return severity; }
+    public void setSeverity(String severity) { this.severity = severity; }
+
+    public String getDetails() { return details; }
+    public void setDetails(String details) { this.details = details; }
 
     public LocalDateTime getFlaggedAt() { return flaggedAt; }
     public void setFlaggedAt(LocalDateTime flaggedAt) { this.flaggedAt = flaggedAt; }
+
+    public Boolean getResolved() { return resolved; }
+    public void setResolved(Boolean resolved) { this.resolved = resolved; }
 }

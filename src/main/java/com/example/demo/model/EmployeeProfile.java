@@ -6,7 +6,6 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "employee_profiles")
 public class EmployeeProfile {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -14,23 +13,26 @@ public class EmployeeProfile {
     @Column(unique = true, nullable = false)
     private String employeeId;
 
+    @Column(nullable = false)
     private String fullName;
 
-    @Column(unique = true)
+    @Column(unique = true, nullable = false)
     private String email;
 
     private String teamName;
+
     private String title;
+
     private Boolean active = true;
 
     private LocalDateTime createdAt;
 
-    @PrePersist
-    public void onCreate() {
+    // Constructors
+    public EmployeeProfile() {
         this.createdAt = LocalDateTime.now();
     }
 
-    // getters & setters
+    // Getters and Setters
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 
