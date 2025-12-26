@@ -5,40 +5,47 @@ import com.example.demo.repository.UserAccountRepository;
 import com.example.demo.service.UserAccountService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 @Service
+@Transactional
 public class UserAccountServiceImpl implements UserAccountService {
 
-    private final UserAccountRepository repository;
+    private final UserAccountRepository userRepo;
     private final PasswordEncoder passwordEncoder;
 
-    // ⚠️ Constructor order EXACT
-    public UserAccountServiceImpl(
-            UserAccountRepository repository,
-            PasswordEncoder passwordEncoder) {
-
-        this.repository = repository;
+    public UserAccountServiceImpl(UserAccountRepository userRepo, PasswordEncoder passwordEncoder) {
+        this.userRepo = userRepo;
         this.passwordEncoder = passwordEncoder;
     }
 
     @Override
-    public UserAccount registerUser(UserAccount user) {
-        user.setPasswordHash(passwordEncoder.encode(user.getPasswordHash()));
+    public UserAccount createUser(UserAccount user) {
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setCreatedAt(LocalDateTime.now());
-        return repository.save(user);
+        return userRepo.save(user);
     }
 
     @Override
-    public UserAccount findByEmail(String email) {
-        return repository.findByEmail(email)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+    public Optional<UserAccount> getUserByEmail(String email) {
+        return userRepo.findByEmail(email);
     }
 
     @Override
-    public UserAccount findById(Long id) {
-        return repository.findById(id)
+    public UserAccount updateUser(UserAccount updatedUser) {
+        UserAccount user = userRepo.findById(updatedUser.getId())
                 .orElseThrow(() -> new RuntimeException("User not found"));
+        user.setEmail(updatedUser.getEmail());
+        user.setPassword(passwordEncoder.encode(updatedUser.getPassword()));
+        user.setRole(updatedUser.getRole());
+        return userRepo.save(user);
+    }
+
+    @Override
+    public List<UserAccount> getAllUsers() {
+        return userRepo.findAll();
     }
 }
