@@ -1,8 +1,8 @@
 package com.example.demo.service.impl;
 
-import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.model.AnomalyRule;
 import com.example.demo.repository.AnomalyRuleRepository;
+import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.service.AnomalyRuleService;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +18,17 @@ public class AnomalyRuleServiceImpl implements AnomalyRuleService {
     }
 
     @Override
+    public List<AnomalyRule> getAllRules() {
+        return ruleRepository.findAll();
+    }
+
+    @Override
+    public AnomalyRule getRuleById(Long id) {
+        return ruleRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Rule not found"));
+    }
+
+    @Override
     public AnomalyRule createRule(AnomalyRule rule) {
         return ruleRepository.save(rule);
     }
@@ -27,32 +38,26 @@ public class AnomalyRuleServiceImpl implements AnomalyRuleService {
         AnomalyRule existing = ruleRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Rule not found"));
 
-        // DO NOT call setId() — entity has no setter
+        // Always safe (existing getter/setter)
         existing.setRuleCode(updatedRule.getRuleCode());
-        existing.setDescription(updatedRule.getDescription());
-        existing.setThresholdType(updatedRule.getThresholdType());
-        existing.setThresholdValue(updatedRule.getThresholdValue());
-        existing.setActive(updatedRule.getActive());
+
+        // Only update thresholdValue if present
+        if (updatedRule.getThresholdValue() != null) {
+            existing.setThresholdValue(updatedRule.getThresholdValue());
+        }
+
+        // Only update active if present
+        if (updatedRule.getActive() != null) {
+            existing.setActive(updatedRule.getActive());
+        }
 
         return ruleRepository.save(existing);
     }
 
     @Override
-    public List<AnomalyRule> getActiveRules() {
-        return ruleRepository.findByActiveTrue();
-    }
-
-    @Override
-    public AnomalyRule getRuleByCode(String ruleCode) {
-        return ruleRepository.findAll()
-                .stream()
-                .filter(r -> ruleCode.equals(r.getRuleCode()))
-                .findFirst()
+    public void deleteRule(Long id) {
+        AnomalyRule existing = ruleRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Rule not found"));
-    }
-
-    @Override
-    public List<AnomalyRule> getAllRules() {
-        return ruleRepository.findAll();
+        ruleRepository.delete(existing);
     }
 }
