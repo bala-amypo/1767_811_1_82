@@ -2,38 +2,37 @@ package com.example.demo.controller;
 
 import com.example.demo.model.TeamSummaryRecord;
 import com.example.demo.service.TeamSummaryService;
-import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/team-summaries")
-@Tag(name = "Team Summary")
 public class TeamSummaryController {
 
-    private final TeamSummaryService service;
+    private final TeamSummaryService teamSummaryService;
 
-    public TeamSummaryController(TeamSummaryService service) {
-        this.service = service;
+    public TeamSummaryController(TeamSummaryService teamSummaryService) {
+        this.teamSummaryService = teamSummaryService;
     }
 
     @PostMapping("/generate")
-    public TeamSummaryRecord generateSummary(
-            @RequestParam String teamName,
-            @RequestParam LocalDate summaryDate) {
-        return service.generateSummary(teamName, summaryDate);
+    public TeamSummaryRecord generateSummary(@RequestBody TeamSummaryRecord summary) {
+        return teamSummaryService.saveTeamSummary(summary);
     }
 
     @GetMapping("/team/{teamName}")
-    public TeamSummaryRecord getByTeam(
-            @PathVariable String teamName) {
-        return service.getSummaryByTeam(teamName);
+    public List<TeamSummaryRecord> getByTeam(@PathVariable String teamName) {
+        return teamSummaryService.getSummariesByTeam(teamName);
+    }
+
+    @GetMapping("/{id}")
+    public TeamSummaryRecord getById(@PathVariable Long id) {
+        return teamSummaryService.getSummaryById(id);
     }
 
     @GetMapping
     public List<TeamSummaryRecord> getAllSummaries() {
-        return service.getAllSummaries();
+        return teamSummaryService.getAllSummaries();
     }
 }

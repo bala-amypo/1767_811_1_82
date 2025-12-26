@@ -2,41 +2,46 @@ package com.example.demo.controller;
 
 import com.example.demo.model.AnomalyFlagRecord;
 import com.example.demo.service.AnomalyFlagService;
-import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/anomalies")
-@Tag(name = "Anomaly Flags")
 public class AnomalyFlagController {
 
-    private final AnomalyFlagService service;
+    private final AnomalyFlagService anomalyFlagService;
 
-    public AnomalyFlagController(AnomalyFlagService service) {
-        this.service = service;
+    public AnomalyFlagController(AnomalyFlagService anomalyFlagService) {
+        this.anomalyFlagService = anomalyFlagService;    
+        
+    }
+
+    @PostMapping
+    public AnomalyFlagRecord flagAnomaly(
+            @RequestBody AnomalyFlagRecord anomalyFlagRecord) {
+        return anomalyFlagService.flagAnomaly(anomalyFlagRecord);
     }
 
     @PutMapping("/{id}/resolve")
-    public AnomalyFlagRecord resolveFlag(@PathVariable Long id) {
-        return service.resolveFlag(id);
+    public AnomalyFlagRecord resolveAnomaly(@PathVariable Long id) {
+        return anomalyFlagService.resolveAnomaly(id);
     }
 
     @GetMapping("/employee/{employeeId}")
-    public List<AnomalyFlagRecord> getByEmployee(
+    public List<AnomalyFlagRecord> getAnomaliesByEmployee(
             @PathVariable Long employeeId) {
-        return service.getFlagsByEmployee(employeeId);
+        return anomalyFlagService.getAnomaliesByEmployee(employeeId);
     }
 
     @GetMapping("/metric/{metricId}")
-    public List<AnomalyFlagRecord> getByMetric(
+    public List<AnomalyFlagRecord> getAnomaliesByMetric(
             @PathVariable Long metricId) {
-        return service.getFlagsByMetric(metricId);
+        return anomalyFlagService.getAnomaliesByMetric(metricId);
     }
 
     @GetMapping
-    public List<AnomalyFlagRecord> getAllFlags() {
-        return service.getAllFlags();
+    public List<AnomalyFlagRecord> getAllAnomalies() {
+        return anomalyFlagService.getAllAnomalies();
     }
 }
