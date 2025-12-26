@@ -3,7 +3,6 @@ package com.example.demo.model;
 import java.time.LocalDate;
 
 public class TeamSummaryRecord {
-
     private String teamName;
     private double avgHoursLogged;
     private double avgScore;
