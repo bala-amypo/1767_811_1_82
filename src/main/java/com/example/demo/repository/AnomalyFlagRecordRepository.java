@@ -2,10 +2,8 @@ package com.example.demo.repository;
 
 import com.example.demo.model.AnomalyFlagRecord;
 import org.springframework.data.jpa.repository.JpaRepository;
-import java.util.List;
+import org.springframework.stereotype.Repository;
 
-public interface AnomalyFlagRecordRepository extends JpaRepository<AnomalyFlagRecord, Long> {
-    List<AnomalyFlagRecord> findByEmployeeId(Long employeeId);
-    List<AnomalyFlagRecord> findByMetricId(Long metricId);
-    List<AnomalyFlagRecord> findByResolvedFalse();
+@Repository
+public interface AnomalyFlagRepository extends JpaRepository<AnomalyFlagRecord, Long> {
 }
