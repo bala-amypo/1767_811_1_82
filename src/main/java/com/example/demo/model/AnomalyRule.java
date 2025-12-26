@@ -17,11 +17,26 @@ public class AnomalyRule {
     private Double thresholdValue;
     private Boolean active = true;
 
+    // Id getter
     public Long getId() { return id; }
 
+    // RuleCode
     public String getRuleCode() { return ruleCode; }
     public void setRuleCode(String ruleCode) { this.ruleCode = ruleCode; }
 
+    // ThresholdValue
     public Double getThresholdValue() { return thresholdValue; }
     public void setThresholdValue(Double thresholdValue) { this.thresholdValue = thresholdValue; }
+
+    // Description
+    public String getDescription() { return description; }
+    public void setDescription(String description) { this.description = description; }
+
+    // ThresholdType
+    public String getThresholdType() { return thresholdType; }
+    public void setThresholdType(String thresholdType) { this.thresholdType = thresholdType; }
+
+    // Active
+    public Boolean getActive() { return active; }
+    public void setActive(Boolean active) { this.active = active; }
 }
