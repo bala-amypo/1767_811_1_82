@@ -29,6 +29,12 @@ public class AnomalyRuleServiceImpl implements AnomalyRuleService {
     }
 
     @Override
+    public AnomalyRule getRuleByCode(String code) {
+        return ruleRepository.findByRuleCode(code)
+                .orElseThrow(() -> new ResourceNotFoundException("Rule not found with code: " + code));
+    }
+
+    @Override
     public AnomalyRule createRule(AnomalyRule rule) {
         return ruleRepository.save(rule);
     }
@@ -38,21 +44,27 @@ public class AnomalyRuleServiceImpl implements AnomalyRuleService {
         AnomalyRule existing = ruleRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Rule not found"));
 
-        // Always safe (existing getter/setter)
+        // Always safe: ruleCode exists
         existing.setRuleCode(updatedRule.getRuleCode());
 
-        // Only update thresholdValue if present
+        // Update thresholdValue if present
         if (updatedRule.getThresholdValue() != null) {
             existing.setThresholdValue(updatedRule.getThresholdValue());
         }
 
-        // Only update active if present
-        if (updatedRule.getActive() != null) {
-            existing.setActive(updatedRule.getActive());
-        }
+        // If your entity had 'active', you could add it here safely
+        // if (updatedRule.getActive() != null) {
+        //     existing.setActive(updatedRule.getActive());
+        // }
 
         return ruleRepository.save(existing);
     }
+    @Override
+public List<AnomalyRule> getActiveRules() {
+    // Assuming 'active' field exists in AnomalyRule
+    return ruleRepository.findByActiveTrue();
+}
+
 
     @Override
     public void deleteRule(Long id) {
