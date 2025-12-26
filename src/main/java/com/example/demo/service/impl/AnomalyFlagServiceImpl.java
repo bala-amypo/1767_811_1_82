@@ -4,50 +4,37 @@ import com.example.demo.model.AnomalyFlagRecord;
 import com.example.demo.repository.AnomalyFlagRecordRepository;
 import com.example.demo.service.AnomalyFlagService;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import java.util.List;
 
 @Service
-@Transactional
 public class AnomalyFlagServiceImpl implements AnomalyFlagService {
 
-    private final AnomalyFlagRecordRepository flagRepo;
+    private final AnomalyFlagRecordRepository anomalyRepo;
 
-    public AnomalyFlagServiceImpl(AnomalyFlagRecordRepository flagRepo) {
-        this.flagRepo = flagRepo;
+    public AnomalyFlagServiceImpl(AnomalyFlagRecordRepository anomalyRepo) {
+        this.anomalyRepo = anomalyRepo;
     }
 
     @Override
-    public AnomalyFlagRecord flagAnomaly(AnomalyFlagRecord flag) {
-        return flagRepo.save(flag);
-    }
-
-    @Override
-    public AnomalyFlagRecord resolveAnomaly(Long id) {
-        AnomalyFlagRecord flag = flagRepo.findById(id)
-                .orElseThrow(() -> new RuntimeException("Anomaly not found"));
-        flag.setResolved(true);
-        return flagRepo.save(flag);
+    public List<AnomalyFlagRecord> getAllFlags() {
+        return anomalyRepo.findAll();
     }
 
     @Override
     public List<AnomalyFlagRecord> getAnomaliesByEmployee(Long employeeId) {
-        return flagRepo.findByEmployeeId(employeeId);
+        return anomalyRepo.findByEmployeeId(employeeId);
     }
 
     @Override
     public List<AnomalyFlagRecord> getAnomaliesByMetric(Long metricId) {
-        return flagRepo.findByMetricId(metricId);
+        return anomalyRepo.findByMetricId(metricId);
     }
 
     @Override
-    public List<AnomalyFlagRecord> getAllAnomalies() {
-        return flagRepo.findAll();
-    }
-
-    @Override
-    public List<AnomalyFlagRecord> getUnresolvedFlags() {
-        return flagRepo.findByResolvedFalse();
+    public AnomalyFlagRecord resolveAnomaly(Long id) {
+        return anomalyRepo.findById(id).map(anomaly -> {
+            anomaly.setResolved(true);
+            return anomalyRepo.save(anomaly);
+        }).orElse(null);
     }
 }

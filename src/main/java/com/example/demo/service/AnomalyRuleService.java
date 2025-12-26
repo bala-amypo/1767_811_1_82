@@ -5,10 +5,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface AnomalyRuleService {
-    AnomalyRule createRule(AnomalyRule rule);
-    AnomalyRule updateRule(Long id, AnomalyRule updatedRule);
-    List<AnomalyRule> getActiveRules();
-    Optional<AnomalyRule> getRuleByCode(String ruleCode);
     Optional<AnomalyRule> getRuleById(Long id);
-    List<AnomalyRule> getAllRules();
+    List<AnomalyRule> getActiveRules();
+    AnomalyRule updateRule(Long id, AnomalyRule rule);
 }
