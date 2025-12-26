@@ -1,11 +1,17 @@
 package com.example.demo.dto;
 
+import jakarta.validation.constraints.NotBlank;
+
 public class AuthRequest {
 
+    @NotBlank
     private String username;
+
+    @NotBlank
     private String password;
 
-    public AuthRequest() {}
+    public AuthRequest() {
+    }
 
     public String getUsername() {
         return username;
@@ -18,7 +24,7 @@ public class AuthRequest {
     public String getPassword() {
         return password;
     }
- 
+    
     public void setPassword(String password) {
         this.password = password;
     }

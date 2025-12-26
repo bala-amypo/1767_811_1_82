@@ -1,29 +1,30 @@
 package com.example.demo.dto;
 
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
 import java.time.LocalDate;
 
 public class ProductivityMetricDto {
 
-    private Long employeeId;
+    @NotNull
     private LocalDate date;
+
+    @Min(0)
     private Double hoursLogged;
+
+    @Min(0)
     private Integer tasksCompleted;
+
+    @Min(0)
     private Integer meetingsAttended;
 
-    public ProductivityMetricDto() {}
-
-    public Long getEmployeeId() {
-        return employeeId;
-    }
-
-    public void setEmployeeId(Long employeeId) {
-        this.employeeId = employeeId;
+    public ProductivityMetricDto() {
     }
 
     public LocalDate getDate() {
         return date;
     }
- 
+    
     public void setDate(LocalDate date) {
         this.date = date;
     }
@@ -31,7 +32,7 @@ public class ProductivityMetricDto {
     public Double getHoursLogged() {
         return hoursLogged;
     }
-
+    
     public void setHoursLogged(Double hoursLogged) {
         this.hoursLogged = hoursLogged;
     }
@@ -39,7 +40,7 @@ public class ProductivityMetricDto {
     public Integer getTasksCompleted() {
         return tasksCompleted;
     }
-
+    
     public void setTasksCompleted(Integer tasksCompleted) {
         this.tasksCompleted = tasksCompleted;
     }
@@ -47,7 +48,7 @@ public class ProductivityMetricDto {
     public Integer getMeetingsAttended() {
         return meetingsAttended;
     }
-
+    
     public void setMeetingsAttended(Integer meetingsAttended) {
         this.meetingsAttended = meetingsAttended;
     }
