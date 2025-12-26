@@ -6,7 +6,6 @@ public class ProductivityCalculator {
 
         double score = (hours * 10) + (tasks * 5) + (meetings * 2);
 
-        // Clamp between 0.0 and 100.0
         if (score < 0.0) {
             return 0.0;
         }
