@@ -2,16 +2,14 @@ package com.example.demo.controller;
 
 import com.example.demo.model.EmployeeProfile;
 import com.example.demo.service.EmployeeProfileService;
-import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/employees")
-@Tag(name = "Employee API", description = "APIs for Employee Profile management")
+@RequestMapping("/api/employees")
+@Tag(name = "Employee Profile")
 public class EmployeeProfileController {
 
     private final EmployeeProfileService service;
@@ -20,21 +18,36 @@ public class EmployeeProfileController {
         this.service = service;
     }
 
+    // POST / - Create employee
     @PostMapping
-    @Operation(summary = "Create a new employee profile")
-    public EmployeeProfile createEmployee(@Valid @RequestBody EmployeeProfile employee) {
-        return service.save(employee);
+    public EmployeeProfile create(@RequestBody EmployeeProfile employee) {
+        return service.createEmployee(employee);
     }
 
+    // GET /{id} - Get employee
+    @GetMapping("/{id}")
+    public EmployeeProfile getById(@PathVariable Long id) {
+        return service.getEmployeeById(id);
+    }
+
+    // GET / - List all
     @GetMapping
-    @Operation(summary = "Get all employee profiles")
-    public List<EmployeeProfile> getAllEmployees() {
-        return service.getAll();
+    public List<EmployeeProfile> getAll() {
+        return service.getAllEmployees();
     }
 
-    @GetMapping("/{employeeId}")
-    @Operation(summary = "Get employee profile by Employee ID")
-    public EmployeeProfile getEmployeeById(@PathVariable String employeeId) {
-        return service.getByEmployeeId(employeeId);
+    // PUT /{id}/status - Update status
+    @PutMapping("/{id}/status")
+    public EmployeeProfile updateStatus(
+            @PathVariable Long id,
+            @RequestParam boolean active) {
+        return service.updateEmployeeStatus(id, active);
+    }
+
+    // GET /lookup/{employeeId} - Lookup
+    @GetMapping("/lookup/{employeeId}")
+    public EmployeeProfile lookup(@PathVariable String employeeId) {
+        return service.findByEmployeeId(employeeId)
+                .orElseThrow(() -> new RuntimeException("Employee not found"));
     }
 }
