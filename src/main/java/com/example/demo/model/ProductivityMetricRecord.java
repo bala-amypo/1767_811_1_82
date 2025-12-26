@@ -1,16 +1,28 @@
 package com.example.demo.model;
 
+import jakarta.persistence.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
+@Entity
+@Table(name = "productivity_metrics")
 public class ProductivityMetricRecord {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     private Long employeeId;
     private LocalDate date;
-    private double hoursLogged;
+    private Double hoursLogged;
     private Integer tasksCompleted;
     private Integer meetingsAttended;
-    private double productivityScore;
+    private Double productivityScore;
     private String rawDataJson;
+    private LocalDateTime submittedAt = LocalDateTime.now();
+
+    // Getters and Setters
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
 
     public Long getEmployeeId() { return employeeId; }
     public void setEmployeeId(Long employeeId) { this.employeeId = employeeId; }
@@ -18,8 +30,8 @@ public class ProductivityMetricRecord {
     public LocalDate getDate() { return date; }
     public void setDate(LocalDate date) { this.date = date; }
 
-    public double getHoursLogged() { return hoursLogged; }
-    public void setHoursLogged(double hoursLogged) { this.hoursLogged = hoursLogged; }
+    public Double getHoursLogged() { return hoursLogged; }
+    public void setHoursLogged(Double hoursLogged) { this.hoursLogged = hoursLogged; }
 
     public Integer getTasksCompleted() { return tasksCompleted; }
     public void setTasksCompleted(Integer tasksCompleted) { this.tasksCompleted = tasksCompleted; }
@@ -27,9 +39,12 @@ public class ProductivityMetricRecord {
     public Integer getMeetingsAttended() { return meetingsAttended; }
     public void setMeetingsAttended(Integer meetingsAttended) { this.meetingsAttended = meetingsAttended; }
 
-    public double getProductivityScore() { return productivityScore; }
-    public void setProductivityScore(double productivityScore) { this.productivityScore = productivityScore; }
+    public Double getProductivityScore() { return productivityScore; }
+    public void setProductivityScore(Double productivityScore) { this.productivityScore = productivityScore; }
 
     public String getRawDataJson() { return rawDataJson; }
     public void setRawDataJson(String rawDataJson) { this.rawDataJson = rawDataJson; }
+
+    public LocalDateTime getSubmittedAt() { return submittedAt; }
+    public void setSubmittedAt(LocalDateTime submittedAt) { this.submittedAt = submittedAt; }
 }
