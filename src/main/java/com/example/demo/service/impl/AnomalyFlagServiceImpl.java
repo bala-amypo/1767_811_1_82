@@ -1,7 +1,7 @@
 package com.example.demo.service.impl;
 
 import com.example.demo.model.AnomalyFlagRecord;
-import com.example.demo.repository.AnomalyFlagRepository;
+import com.example.demo.repository.AnomalyFlagRecordRepository;
 import com.example.demo.service.AnomalyFlagService;
 import org.springframework.stereotype.Service;
 
@@ -10,9 +10,9 @@ import java.util.List;
 @Service
 public class AnomalyFlagServiceImpl implements AnomalyFlagService {
 
-    private final AnomalyFlagRepository anomalyRepo;
+    private final AnomalyFlagRecordRepository anomalyRepo;
 
-    public AnomalyFlagServiceImpl(AnomalyFlagRepository anomalyRepo) {
+    public AnomalyFlagServiceImpl(AnomalyFlagRecordRepository anomalyRepo) {
         this.anomalyRepo = anomalyRepo;
     }
 

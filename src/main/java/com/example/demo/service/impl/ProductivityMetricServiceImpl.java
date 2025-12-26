@@ -1,7 +1,7 @@
 package com.example.demo.service.impl;
 
 import com.example.demo.model.ProductivityMetricRecord;
-import com.example.demo.repository.ProductivityMetricRepository;
+import com.example.demo.repository.ProductivityMetricRecordRepository;
 import com.example.demo.service.ProductivityMetricService;
 import org.springframework.stereotype.Service;
 
@@ -11,9 +11,9 @@ import java.util.Optional;
 @Service
 public class ProductivityMetricServiceImpl implements ProductivityMetricService {
 
-    private final ProductivityMetricRepository metricRepo;
+    private final ProductivityMetricRecordRepository metricRepo;
 
-    public ProductivityMetricServiceImpl(ProductivityMetricRepository metricRepo) {
+    public ProductivityMetricServiceImpl(ProductivityMetricRecordRepository metricRepo) {
         this.metricRepo = metricRepo;
     }
 
