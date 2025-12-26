@@ -8,8 +8,10 @@ public class ProductivityCalculator {
             return 0.0;
         }
 
-        double score = (hours * 10) + (tasks * 5) + (meetings * 2);
+        // Meetings are a penalty now
+        double score = (hours * 10) + (tasks * 5) - (meetings * 2);
 
+        // Clamp score
         if (score < 0) score = 0;
         if (score > 100) score = 100;
 
