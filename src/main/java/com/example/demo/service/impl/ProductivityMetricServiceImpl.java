@@ -3,35 +3,48 @@ package com.example.demo.service.impl;
 import com.example.demo.model.ProductivityMetricRecord;
 import com.example.demo.repository.ProductivityMetricRecordRepository;
 import com.example.demo.service.ProductivityMetricService;
-
+import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 
+@Service
 public class ProductivityMetricServiceImpl implements ProductivityMetricService {
 
-    private final ProductivityMetricRecordRepository repository;
+    private final ProductivityMetricRecordRepository metricRepo;
 
-    public ProductivityMetricServiceImpl(ProductivityMetricRecordRepository repository) {
-        this.repository = repository;
+    public ProductivityMetricServiceImpl(ProductivityMetricRecordRepository metricRepo) {
+        this.metricRepo = metricRepo;
     }
 
     @Override
-    public ProductivityMetricRecord saveMetric(ProductivityMetricRecord record) {
-        return repository.save(record);
+    public ProductivityMetricRecord recordMetric(ProductivityMetricRecord record) {
+        return metricRepo.save(record);
+    }
+
+    @Override
+    public ProductivityMetricRecord updateMetric(Long id, ProductivityMetricRecord record) {
+        ProductivityMetricRecord existing = metricRepo.findById(id)
+                .orElseThrow(() -> new RuntimeException("Metric not found"));
+        existing.setHoursLogged(record.getHoursLogged());
+        existing.setTasksCompleted(record.getTasksCompleted());
+        existing.setMeetingsAttended(record.getMeetingsAttended());
+        existing.setProductivityScore(record.getProductivityScore());
+        existing.setRawDataJson(record.getRawDataJson());
+        return metricRepo.save(existing);
     }
 
     @Override
     public Optional<ProductivityMetricRecord> getMetricById(Long id) {
-        return repository.findById(id);
+        return metricRepo.findById(id);
     }
 
     @Override
     public List<ProductivityMetricRecord> getMetricsByEmployee(Long employeeId) {
-        return repository.findByEmployeeId(employeeId);
+        return metricRepo.findByEmployeeId(employeeId);
     }
 
     @Override
     public List<ProductivityMetricRecord> getAllMetrics() {
-        return repository.findAll();
+        return metricRepo.findAll();
     }
 }

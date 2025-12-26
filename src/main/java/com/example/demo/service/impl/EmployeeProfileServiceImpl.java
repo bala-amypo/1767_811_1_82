@@ -3,34 +3,44 @@ package com.example.demo.service.impl;
 import com.example.demo.model.EmployeeProfile;
 import com.example.demo.repository.EmployeeProfileRepository;
 import com.example.demo.service.EmployeeProfileService;
-
+import org.springframework.stereotype.Service;
+import java.util.List;
 import java.util.Optional;
 
+@Service
 public class EmployeeProfileServiceImpl implements EmployeeProfileService {
 
-    private final EmployeeProfileRepository repository;
+    private final EmployeeProfileRepository employeeRepo;
 
-    public EmployeeProfileServiceImpl(EmployeeProfileRepository repository) {
-        this.repository = repository;
+    public EmployeeProfileServiceImpl(EmployeeProfileRepository employeeRepo) {
+        this.employeeRepo = employeeRepo;
     }
 
     @Override
     public EmployeeProfile createEmployee(EmployeeProfile employee) {
-        return employee;
+        return employeeRepo.save(employee);
     }
 
     @Override
-    public Optional<EmployeeProfile> getEmployeeById(Long id) {
-        return repository.findById(id);
+    public EmployeeProfile getEmployeeById(Long id) {
+        return employeeRepo.findById(id)
+                .orElseThrow(() -> new RuntimeException("Employee not found"));
     }
 
     @Override
-    public Optional<EmployeeProfile> getByEmployeeId(String employeeId) {
-        return repository.findByEmployeeId(employeeId);
+    public List<EmployeeProfile> getAllEmployees() {
+        return employeeRepo.findAll();
     }
 
     @Override
-    public EmployeeProfile updateEmployee(EmployeeProfile employee) {
-        return employee;
+    public EmployeeProfile updateEmployeeStatus(Long id, boolean active) {
+        EmployeeProfile emp = getEmployeeById(id);
+        emp.setActive(active);
+        return employeeRepo.save(emp);
+    }
+
+    @Override
+    public Optional<EmployeeProfile> findByEmployeeId(String employeeId) {
+        return employeeRepo.findByEmployeeId(employeeId);
     }
 }
