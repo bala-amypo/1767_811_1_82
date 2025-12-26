@@ -1,6 +1,8 @@
 package com.example.demo.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
 
 @Entity
@@ -13,9 +15,12 @@ public class EmployeeProfile {
     @Column(unique = true)
     private String employeeId;
 
+    @NotBlank(message = "Full name is required")
     private String fullName;
 
     @Column(unique = true)
+    @Email(message = "Email should be valid")
+    @NotBlank(message = "Email is required")
     private String email;
 
     private String teamName;
