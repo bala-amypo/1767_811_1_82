@@ -4,43 +4,44 @@ import com.example.demo.model.EmployeeProfile;
 import com.example.demo.repository.EmployeeProfileRepository;
 import com.example.demo.service.EmployeeProfileService;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class EmployeeProfileServiceImpl implements EmployeeProfileService {
 
-    private final EmployeeProfileRepository employeeRepo;
+    private final EmployeeProfileRepository employeeRepository;
 
-    public EmployeeProfileServiceImpl(EmployeeProfileRepository employeeRepo) {
-        this.employeeRepo = employeeRepo;
+    public EmployeeProfileServiceImpl(EmployeeProfileRepository employeeRepository) {
+        this.employeeRepository = employeeRepository;
     }
 
     @Override
     public EmployeeProfile createEmployee(EmployeeProfile employee) {
-        return employeeRepo.save(employee);
+        return employeeRepository.save(employee);
     }
 
     @Override
     public EmployeeProfile getEmployeeById(Long id) {
-        return employeeRepo.findById(id)
+        return employeeRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Employee not found"));
     }
 
     @Override
     public List<EmployeeProfile> getAllEmployees() {
-        return employeeRepo.findAll();
+        return employeeRepository.findAll();
     }
 
     @Override
-    public EmployeeProfile updateEmployeeStatus(Long id, boolean active) {
-        EmployeeProfile emp = getEmployeeById(id);
-        emp.setActive(active);
-        return employeeRepo.save(emp);
+    public EmployeeProfile updateEmployeeStatus(Long id, String status) {
+        EmployeeProfile employee = getEmployeeById(id);
+        employee.setActive(true);
+        return employeeRepository.save(employee);
     }
 
     @Override
-    public Optional<EmployeeProfile> findByEmployeeId(String employeeId) {
-        return employeeRepo.findByEmployeeId(employeeId);
+    public EmployeeProfile getByEmployeeId(String employeeId) {
+        return employeeRepository.findByEmployeeId(employeeId)
+                .orElseThrow(() -> new RuntimeException("Employee not found"));
     }
 }

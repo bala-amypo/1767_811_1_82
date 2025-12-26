@@ -2,50 +2,43 @@ package com.example.demo.controller;
 
 import com.example.demo.model.AnomalyRule;
 import com.example.demo.service.AnomalyRuleService;
-import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/anomaly-rules")
-@Tag(name = "Anomaly Rules")
 public class AnomalyRuleController {
 
-    private final AnomalyRuleService service;
+    private final AnomalyRuleService ruleService;
 
-    public AnomalyRuleController(AnomalyRuleService service) {
-        this.service = service;
+    public AnomalyRuleController(AnomalyRuleService ruleService) {
+        this.ruleService = ruleService;
     }
 
-    // POST / - Create rule
     @PostMapping
-    public AnomalyRule create(@RequestBody AnomalyRule rule) {
-        return service.createRule(rule);
+    public AnomalyRule createRule(@RequestBody AnomalyRule rule) {
+        return ruleService.createRule(rule);
     }
 
-    // PUT /{id} - Update rule
     @PutMapping("/{id}")
-    public AnomalyRule update(@PathVariable Long id,
-                              @RequestBody AnomalyRule rule) {
-        return service.updateRule(id, rule);
+    public AnomalyRule updateRule(@PathVariable Long id,
+                                  @RequestBody AnomalyRule rule) {
+        return ruleService.updateRule(id, rule);
     }
 
-    // GET /active - List active rules
     @GetMapping("/active")
-    public List<AnomalyRule> getActive() {
-        return service.getActiveRules();
+    public List<AnomalyRule> getActiveRules() {
+        return ruleService.getActiveRules();
     }
 
-    // GET /{id} - Get rule
     @GetMapping("/{id}")
-    public AnomalyRule getById(@PathVariable Long id) {
-        return service.getRuleById(id);
+    public AnomalyRule getRuleById(@PathVariable Long id) {
+        return ruleService.getRuleById(id);
     }
 
-    // GET / - List all
     @GetMapping
-    public List<AnomalyRule> getAll() {
-        return service.getAllRules();
+    public List<AnomalyRule> getAllRules() {
+        return ruleService.getAllRules();
     }
 }

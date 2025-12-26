@@ -1,40 +1,40 @@
 package com.example.demo.service.impl;
 
 import com.example.demo.model.TeamSummaryRecord;
-import com.example.demo.repository.TeamSummaryRepository;
+import com.example.demo.repository.TeamSummaryRecordRepository;
 import com.example.demo.service.TeamSummaryService;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class TeamSummaryServiceImpl implements TeamSummaryService {
 
-    private final TeamSummaryRepository summaryRepo;
+    private final TeamSummaryRecordRepository repository;
 
-    public TeamSummaryServiceImpl(TeamSummaryRepository summaryRepo) {
-        this.summaryRepo = summaryRepo;
+    public TeamSummaryServiceImpl(TeamSummaryRecordRepository repository) {
+        this.repository = repository;
     }
 
     @Override
-    public TeamSummaryRecord generateSummary(String teamName) {
-        TeamSummaryRecord record = new TeamSummaryRecord();
-        record.setTeamName(teamName);
-        return summaryRepo.save(record);
+    public TeamSummaryRecord saveTeamSummary(TeamSummaryRecord summary) {
+        return repository.save(summary);
     }
 
     @Override
-    public List<TeamSummaryRecord> getByTeam(String teamName) {
-        return summaryRepo.findByTeamName(teamName);
+    public List<TeamSummaryRecord> getSummariesByTeam(String teamName) {
+        return repository.findByTeamName(teamName);
     }
 
     @Override
-    public TeamSummaryRecord getById(Long id) {
-        return summaryRepo.findById(id)
-                .orElseThrow(() -> new RuntimeException("TeamSummary not found"));
+    public TeamSummaryRecord getSummaryById(Long id) {
+        Optional<TeamSummaryRecord> summary = repository.findById(id);
+        return summary.orElse(null); 
     }
 
     @Override
-    public List<TeamSummaryRecord> getAll() {
-        return summaryRepo.findAll();
+    public List<TeamSummaryRecord> getAllSummaries() {
+        return repository.findAll();
     }
 }

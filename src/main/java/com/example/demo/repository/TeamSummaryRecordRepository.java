@@ -4,7 +4,10 @@ import com.example.demo.model.TeamSummaryRecord;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface TeamSummaryRecordRepository extends JpaRepository<TeamSummaryRecord, Long> {
-    // Add custom queries here if needed
+    
+    List<TeamSummaryRecord> findByTeamName(String teamName);
 }

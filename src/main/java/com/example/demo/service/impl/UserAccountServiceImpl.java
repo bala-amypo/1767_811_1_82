@@ -1,37 +1,44 @@
 package com.example.demo.service.impl;
 
 import com.example.demo.model.UserAccount;
-import com.example.demo.dto.AuthRequest;
-import com.example.demo.dto.AuthResponse;
-import com.example.demo.dto.RegisterRequest;
 import com.example.demo.repository.UserAccountRepository;
 import com.example.demo.service.UserAccountService;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserAccountServiceImpl implements UserAccountService {
 
-    private final UserAccountRepository userRepo;
+    private final UserAccountRepository userAccountRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    public UserAccountServiceImpl(UserAccountRepository userRepo) {
-        this.userRepo = userRepo;
+    public UserAccountServiceImpl(UserAccountRepository userAccountRepository,
+                                  PasswordEncoder passwordEncoder) {
+        this.userAccountRepository = userAccountRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
-    public UserAccount register(RegisterRequest request) {
-        UserAccount user = new UserAccount();
-        user.setUsername(request.getUsername());
-        user.setPassword(request.getPassword()); // For real app, encode password!
-        return userRepo.save(user);
+    public UserAccount saveUser(UserAccount userAccount) {
+        // Hash the password before saving
+        userAccount.setPasswordHash(passwordEncoder.encode(userAccount.getPasswordHash()));
+        return userAccountRepository.save(userAccount);
     }
 
     @Override
-    public AuthResponse login(AuthRequest request) {
-        UserAccount user = userRepo.findByUsername(request.getUsername())
-                .orElseThrow(() -> new RuntimeException("User not found"));
-        if(!user.getPassword().equals(request.getPassword()))
-            throw new RuntimeException("Invalid password");
+    public List<UserAccount> getAllUsers() {
+        return userAccountRepository.findAll();
+    }
 
-        return new AuthResponse("FAKE-JWT-TOKEN"); // Simulated JWT for testing
+    @Override
+    public Optional<UserAccount> authenticateUser(String username, String password) {
+        Optional<UserAccount> userOpt = userAccountRepository.findByUsername(username);
+        if (userOpt.isPresent() && passwordEncoder.matches(password, userOpt.get().getPasswordHash())) {
+            return userOpt;
+        }
+        return Optional.empty(); // authentication failed
     }
 }
