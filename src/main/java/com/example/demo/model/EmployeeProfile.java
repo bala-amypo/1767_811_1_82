@@ -1,12 +1,27 @@
 package com.example.demo.model;
 
+import jakarta.persistence.*;
+import java.time.LocalDateTime;
+
+@Entity
 public class EmployeeProfile {
+
+    @Id
+    @GeneratedValue
     private Long id;
+
+    @Column(unique = true)
     private String employeeId;
+
     private String fullName;
+
+    @Column(unique = true)
     private String email;
-    private boolean active = true;
+
     private String teamName;
+    private String title;
+    private Boolean active = true;
+    private LocalDateTime createdAt = LocalDateTime.now();
 
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
@@ -20,9 +35,12 @@ public class EmployeeProfile {
     public String getEmail() { return email; }
     public void setEmail(String email) { this.email = email; }
 
-    public boolean getActive() { return active; }
-    public void setActive(boolean active) { this.active = active; }
-
     public String getTeamName() { return teamName; }
     public void setTeamName(String teamName) { this.teamName = teamName; }
+
+    public String getTitle() { return title; }
+    public void setTitle(String title) { this.title = title; }
+
+    public Boolean getActive() { return active; }
+    public void setActive(Boolean active) { this.active = active; }
 }

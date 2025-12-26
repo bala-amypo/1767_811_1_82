@@ -19,11 +19,9 @@ public class UserAccount {
     private String passwordHash;
 
     @ElementCollection
-    private Set<String> role;
+    private Set<String> roles;
 
     private LocalDateTime createdAt = LocalDateTime.now();
-
-    // ===== getters & setters REQUIRED by controllers/security =====
 
     public Long getId() { return id; }
 
@@ -36,6 +34,6 @@ public class UserAccount {
     public String getPasswordHash() { return passwordHash; }
     public void setPasswordHash(String passwordHash) { this.passwordHash = passwordHash; }
 
-    public Set<String> getRole() { return role; }
-    public void setRole(Set<String> role) { this.role = role; }
+    public Set<String> getRoles() { return roles; }
+    public void setRoles(Set<String> roles) { this.roles = roles; }
 }

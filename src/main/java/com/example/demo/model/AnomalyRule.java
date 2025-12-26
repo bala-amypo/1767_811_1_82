@@ -1,16 +1,27 @@
 package com.example.demo.model;
 
+import jakarta.persistence.*;
+
+@Entity
 public class AnomalyRule {
+
+    @Id
+    @GeneratedValue
+    private Long id;
+
+    @Column(unique = true)
     private String ruleCode;
-    private double thresholdValue;
-    private boolean active;
+
+    private String description;
+    private String thresholdType;
+    private Double thresholdValue;
+    private Boolean active = true;
+
+    public Long getId() { return id; }
 
     public String getRuleCode() { return ruleCode; }
     public void setRuleCode(String ruleCode) { this.ruleCode = ruleCode; }
 
-    public double getThresholdValue() { return thresholdValue; }
-    public void setThresholdValue(double thresholdValue) { this.thresholdValue = thresholdValue; }
-
-    public boolean isActive() { return active; }
-    public void setActive(boolean active) { this.active = active; }
+    public Double getThresholdValue() { return thresholdValue; }
+    public void setThresholdValue(Double thresholdValue) { this.thresholdValue = thresholdValue; }
 }
