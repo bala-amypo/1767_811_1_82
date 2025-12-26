@@ -25,4 +25,24 @@ public class AnomalyFlagServiceImpl implements AnomalyFlagService {
     public List<AnomalyFlagRecord> getAllAnomalies() {
         return anomalyRepo.findAll();
     }
+
+    @Override
+    public AnomalyFlagRecord resolveAnomaly(Long id) {
+        AnomalyFlagRecord record = anomalyRepo.findById(id).orElse(null);
+        if (record != null) {
+            record.setResolved(true); // Assuming your entity has a 'resolved' field
+            anomalyRepo.save(record);
+        }
+        return record;
+    }
+
+    @Override
+    public List<AnomalyFlagRecord> getAnomaliesByEmployee(Long employeeId) {
+        return anomalyRepo.findByEmployeeId(employeeId);
+    }
+
+    @Override
+    public List<AnomalyFlagRecord> getAnomaliesByMetric(Long metricId) {
+        return anomalyRepo.findByMetricId(metricId);
+    }
 }
