@@ -1,25 +1,68 @@
 package com.example.demo.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.*;
 import java.time.LocalDateTime;
 
 @Entity
+@Table(name = "anomaly_flags")
 public class AnomalyFlagRecord {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String description;
+    @NotNull
+    private Long employeeId;
 
-    private LocalDateTime timestamp;
+    @NotNull
+    private Long metricId;
 
-    // Getters and setters
+    @NotBlank
+    private String ruleCode;
+
+    @NotBlank
+    private String severity; 
+
+    private String details;
+
+    private LocalDateTime flaggedAt = LocalDateTime.now();
+
+    private Boolean resolved = false;
+
+    public AnomalyFlagRecord() {}
+
+    public AnomalyFlagRecord(Long employeeId, Long metricId, String ruleCode, String severity, String details) {
+        this.employeeId = employeeId;
+        this.metricId = metricId;
+        this.ruleCode = ruleCode;
+        this.severity = severity;
+        this.details = details;
+        this.flaggedAt = LocalDateTime.now();
+        this.resolved = false;
+    }
+
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 
-    public String getDescription() { return description; }
-    public void setDescription(String description) { this.description = description; }
+    public Long getEmployeeId() { return employeeId; }
+    public void setEmployeeId(Long employeeId) { this.employeeId = employeeId; }
 
-    public LocalDateTime getTimestamp() { return timestamp; }
-    public void setTimestamp(LocalDateTime timestamp) { this.timestamp = timestamp; }
+    public Long getMetricId() { return metricId; }
+    public void setMetricId(Long metricId) { this.metricId = metricId; }
+
+    public String getRuleCode() { return ruleCode; }
+    public void setRuleCode(String ruleCode) { this.ruleCode = ruleCode; }
+
+    public String getSeverity() { return severity; }
+    public void setSeverity(String severity) { this.severity = severity; }
+
+    public String getDetails() { return details; }
+    public void setDetails(String details) { this.details = details; }
+
+    public LocalDateTime getFlaggedAt() { return flaggedAt; }
+    public void setFlaggedAt(LocalDateTime flaggedAt) { this.flaggedAt = flaggedAt; }
+
+    public Boolean getResolved() { return resolved; }
+    public void setResolved(Boolean resolved) { this.resolved = resolved; }
 }

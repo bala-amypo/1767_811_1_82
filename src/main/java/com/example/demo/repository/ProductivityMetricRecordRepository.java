@@ -7,6 +7,8 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface ProductivityMetricRecordRepository extends JpaRepository<ProductivityMetricRecord, Long> {
+public interface ProductivityMetricRecordRepository
+        extends JpaRepository<ProductivityMetricRecord, Long> {
+
     List<ProductivityMetricRecord> findByEmployeeId(Long employeeId);
 }

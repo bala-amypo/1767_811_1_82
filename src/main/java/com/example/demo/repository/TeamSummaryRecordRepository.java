@@ -8,5 +8,6 @@ import java.util.List;
 
 @Repository
 public interface TeamSummaryRecordRepository extends JpaRepository<TeamSummaryRecord, Long> {
+    
     List<TeamSummaryRecord> findByTeamName(String teamName);
 }

@@ -10,39 +10,37 @@ import java.util.List;
 @Service
 public class AnomalyFlagServiceImpl implements AnomalyFlagService {
 
-    private final AnomalyFlagRecordRepository anomalyRepo;
+    private final AnomalyFlagRecordRepository repository;
 
-    public AnomalyFlagServiceImpl(AnomalyFlagRecordRepository anomalyRepo) {
-        this.anomalyRepo = anomalyRepo;
+    public AnomalyFlagServiceImpl(AnomalyFlagRecordRepository repository) {
+        this.repository = repository;
     }
 
     @Override
-    public AnomalyFlagRecord flagAnomaly(AnomalyFlagRecord record) {
-        return anomalyRepo.save(record);
-    }
-
-    @Override
-    public List<AnomalyFlagRecord> getAllAnomalies() {
-        return anomalyRepo.findAll();
+    public AnomalyFlagRecord flagAnomaly(AnomalyFlagRecord anomalyFlagRecord) {
+        return repository.save(anomalyFlagRecord);
     }
 
     @Override
     public AnomalyFlagRecord resolveAnomaly(Long id) {
-        AnomalyFlagRecord record = anomalyRepo.findById(id).orElse(null);
-        if (record != null) {
-            record.setResolved(true); // Assuming your entity has a 'resolved' field
-            anomalyRepo.save(record);
-        }
-        return record;
+        AnomalyFlagRecord record = repository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Anomaly not found"));
+        record.setResolved(true);
+        return repository.save(record);
     }
 
     @Override
     public List<AnomalyFlagRecord> getAnomaliesByEmployee(Long employeeId) {
-        return anomalyRepo.findByEmployeeId(employeeId);
+        return repository.findByEmployeeId(employeeId);
     }
 
     @Override
     public List<AnomalyFlagRecord> getAnomaliesByMetric(Long metricId) {
-        return anomalyRepo.findByMetricId(metricId);
+        return repository.findByMetricId(metricId);
+    }
+
+    @Override
+    public List<AnomalyFlagRecord> getAllAnomalies() {
+        return repository.findAll();
     }
 }

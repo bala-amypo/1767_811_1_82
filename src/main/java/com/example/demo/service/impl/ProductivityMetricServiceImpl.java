@@ -6,40 +6,42 @@ import com.example.demo.service.ProductivityMetricService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class ProductivityMetricServiceImpl implements ProductivityMetricService {
 
-    private final ProductivityMetricRecordRepository metricRepo;
+    private final ProductivityMetricRecordRepository metricRepository;
 
-    public ProductivityMetricServiceImpl(ProductivityMetricRecordRepository metricRepo) {
-        this.metricRepo = metricRepo;
+    public ProductivityMetricServiceImpl(ProductivityMetricRecordRepository metricRepository) {
+        this.metricRepository = metricRepository;
     }
 
     @Override
     public ProductivityMetricRecord recordMetric(ProductivityMetricRecord record) {
-        return metricRepo.save(record);
+        return metricRepository.save(record);
     }
 
     @Override
     public ProductivityMetricRecord updateMetric(Long id, ProductivityMetricRecord record) {
-        record.setId(id);
-        return metricRepo.save(record);
+        ProductivityMetricRecord existing = metricRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Metric not found"));
+        record.setId(existing.getId());
+        return metricRepository.save(record);
     }
 
     @Override
     public List<ProductivityMetricRecord> getMetricsByEmployee(Long employeeId) {
-        return metricRepo.findByEmployeeId(employeeId);
+        return metricRepository.findByEmployeeId(employeeId);
+    }
+
+    @Override
+    public ProductivityMetricRecord getMetricById(Long id) {
+        return metricRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Metric not found"));
     }
 
     @Override
     public List<ProductivityMetricRecord> getAllMetrics() {
-        return metricRepo.findAll();
-    }
-
-    @Override
-    public Optional<ProductivityMetricRecord> getMetricById(Long id) {
-        return metricRepo.findById(id);
+        return metricRepository.findAll();
     }
 }

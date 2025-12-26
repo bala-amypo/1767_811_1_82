@@ -9,12 +9,13 @@ public class TeamSummaryDto {
     private Double avgScore;
     private Integer anomalyCount;
 
-    public TeamSummaryDto() {}
+    public TeamSummaryDto() {
+    }
 
     public String getTeamName() {
         return teamName;
     }
-
+    
     public void setTeamName(String teamName) {
         this.teamName = teamName;
     }
@@ -22,7 +23,7 @@ public class TeamSummaryDto {
     public LocalDate getSummaryDate() {
         return summaryDate;
     }
-
+    
     public void setSummaryDate(LocalDate summaryDate) {
         this.summaryDate = summaryDate;
     }
@@ -30,7 +31,7 @@ public class TeamSummaryDto {
     public Double getAvgScore() {
         return avgScore;
     }
-
+    
     public void setAvgScore(Double avgScore) {
         this.avgScore = avgScore;
     }
@@ -38,7 +39,7 @@ public class TeamSummaryDto {
     public Integer getAnomalyCount() {
         return anomalyCount;
     }
-
+    
     public void setAnomalyCount(Integer anomalyCount) {
         this.anomalyCount = anomalyCount;
     }

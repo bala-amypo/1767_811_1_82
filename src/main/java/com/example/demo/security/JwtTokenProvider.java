@@ -1,6 +1,5 @@
 package com.example.demo.security;
 
-import com.example.demo.model.UserAccount;
 import io.jsonwebtoken.*;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -10,28 +9,23 @@ import java.util.Date;
 @Component
 public class JwtTokenProvider {
 
-    @Value("${jwt.secret}")
+    @Value("${jwt.secret:secret123}")
     private String secretKey;
 
-    @Value("${jwt.expirationMs}")
+    @Value("${jwt.expiration:86400000}") // 1 day
     private long expirationMs;
 
-    public String generateToken(UserAccount user) {
-        Date now = new Date();
-        Date expiryDate = new Date(now.getTime() + expirationMs);
-
+    public String generateToken(String username) {
         return Jwts.builder()
-                .setSubject(user.getUsername())
-                .claim("roles", user.getRole())
-                .setIssuedAt(now)
-                .setExpiration(expiryDate)
+                .setSubject(username)
+                .setIssuedAt(new Date())
+                .setExpiration(new Date(System.currentTimeMillis() + expirationMs))
                 .signWith(SignatureAlgorithm.HS256, secretKey)
                 .compact();
     }
 
     public String getUsernameFromToken(String token) {
-        return Jwts.parser().setSigningKey(secretKey)
-                .parseClaimsJws(token).getBody().getSubject();
+        return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody().getSubject();
     }
 
     public boolean validateToken(String token) {

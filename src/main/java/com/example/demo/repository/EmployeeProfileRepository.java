@@ -7,6 +7,8 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface EmployeeProfileRepository extends JpaRepository<EmployeeProfile, Long> {
+public interface EmployeeProfileRepository
+        extends JpaRepository<EmployeeProfile, Long> {
+
     Optional<EmployeeProfile> findByEmployeeId(String employeeId);
 }

@@ -11,19 +11,30 @@ import java.util.Optional;
 @Service
 public class TeamSummaryServiceImpl implements TeamSummaryService {
 
-    private final TeamSummaryRecordRepository teamRepo;
+    private final TeamSummaryRecordRepository repository;
 
-    public TeamSummaryServiceImpl(TeamSummaryRecordRepository teamRepo) {
-        this.teamRepo = teamRepo;
+    public TeamSummaryServiceImpl(TeamSummaryRecordRepository repository) {
+        this.repository = repository;
+    }
+
+    @Override
+    public TeamSummaryRecord saveTeamSummary(TeamSummaryRecord summary) {
+        return repository.save(summary);
     }
 
     @Override
     public List<TeamSummaryRecord> getSummariesByTeam(String teamName) {
-        return teamRepo.findByTeamName(teamName);
+        return repository.findByTeamName(teamName);
     }
 
     @Override
-    public Optional<TeamSummaryRecord> getSummaryById(Long id) {
-        return teamRepo.findById(id);
+    public TeamSummaryRecord getSummaryById(Long id) {
+        Optional<TeamSummaryRecord> summary = repository.findById(id);
+        return summary.orElse(null); 
+    }
+
+    @Override
+    public List<TeamSummaryRecord> getAllSummaries() {
+        return repository.findAll();
     }
 }

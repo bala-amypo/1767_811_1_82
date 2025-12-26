@@ -1,30 +1,67 @@
 package com.example.demo.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.*;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
+@Table(name = "team_summaries")
 public class TeamSummaryRecord {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotBlank
     private String teamName;
 
-    private int totalTasks;
+    @NotNull
+    private LocalDate summaryDate;
 
-    private LocalDateTime lastUpdated;
+    private Double avgHoursLogged;
 
-    // Getters and setters
+    private Double avgTasksCompleted;
+
+    private Double avgScore;
+
+    private Integer anomalyCount;
+
+    private LocalDateTime generatedAt = LocalDateTime.now();
+
+    public TeamSummaryRecord() {}
+
+    public TeamSummaryRecord(String teamName, LocalDate summaryDate, Double avgHoursLogged, Double avgTasksCompleted, Double avgScore, Integer anomalyCount) {
+        this.teamName = teamName;
+        this.summaryDate = summaryDate;
+        this.avgHoursLogged = avgHoursLogged;
+        this.avgTasksCompleted = avgTasksCompleted;
+        this.avgScore = avgScore;
+        this.anomalyCount = anomalyCount;
+        this.generatedAt = LocalDateTime.now();
+    }
+
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 
     public String getTeamName() { return teamName; }
     public void setTeamName(String teamName) { this.teamName = teamName; }
 
-    public int getTotalTasks() { return totalTasks; }
-    public void setTotalTasks(int totalTasks) { this.totalTasks = totalTasks; }
+    public LocalDate getSummaryDate() { return summaryDate; }
+    public void setSummaryDate(LocalDate summaryDate) { this.summaryDate = summaryDate; }
 
-    public LocalDateTime getLastUpdated() { return lastUpdated; }
-    public void setLastUpdated(LocalDateTime lastUpdated) { this.lastUpdated = lastUpdated; }
+    public Double getAvgHoursLogged() { return avgHoursLogged; }
+    public void setAvgHoursLogged(Double avgHoursLogged) { this.avgHoursLogged = avgHoursLogged; }
+
+    public Double getAvgTasksCompleted() { return avgTasksCompleted; }
+    public void setAvgTasksCompleted(Double avgTasksCompleted) { this.avgTasksCompleted = avgTasksCompleted; }
+
+    public Double getAvgScore() { return avgScore; }
+    public void setAvgScore(Double avgScore) { this.avgScore = avgScore; }
+
+    public Integer getAnomalyCount() { return anomalyCount; }
+    public void setAnomalyCount(Integer anomalyCount) { this.anomalyCount = anomalyCount; }
+
+    public LocalDateTime getGeneratedAt() { return generatedAt; }
+    public void setGeneratedAt(LocalDateTime generatedAt) { this.generatedAt = generatedAt; }
 }

@@ -1,10 +1,16 @@
 package com.example.demo.service;
 
 import com.example.demo.model.TeamSummaryRecord;
+
 import java.util.List;
-import java.util.Optional;
 
 public interface TeamSummaryService {
+
+    TeamSummaryRecord saveTeamSummary(TeamSummaryRecord summary);
+
     List<TeamSummaryRecord> getSummariesByTeam(String teamName);
-    Optional<TeamSummaryRecord> getSummaryById(Long id);
+
+    TeamSummaryRecord getSummaryById(Long id);
+
+    List<TeamSummaryRecord> getAllSummaries();
 }
