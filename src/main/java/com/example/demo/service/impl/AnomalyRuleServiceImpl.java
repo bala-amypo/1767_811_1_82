@@ -1,47 +1,58 @@
 package com.example.demo.service.impl;
 
+import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.model.AnomalyRule;
 import com.example.demo.repository.AnomalyRuleRepository;
 import com.example.demo.service.AnomalyRuleService;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class AnomalyRuleServiceImpl implements AnomalyRuleService {
 
-    private final AnomalyRuleRepository repository;
+    private final AnomalyRuleRepository ruleRepository;
 
-    public AnomalyRuleServiceImpl(AnomalyRuleRepository repository) {
-        this.repository = repository;
+    public AnomalyRuleServiceImpl(AnomalyRuleRepository ruleRepository) {
+        this.ruleRepository = ruleRepository;
     }
 
     @Override
     public AnomalyRule createRule(AnomalyRule rule) {
-        return repository.save(rule);
+        return ruleRepository.save(rule);
     }
 
     @Override
     public AnomalyRule updateRule(Long id, AnomalyRule updatedRule) {
-        AnomalyRule existing = repository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Rule not found"));
-        updatedRule.setRuleCode(existing.getRuleCode());
-        return repository.save(updatedRule);
+        AnomalyRule existing = ruleRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Rule not found"));
+
+        // DO NOT call setId() — entity has no setter
+        existing.setRuleCode(updatedRule.getRuleCode());
+        existing.setDescription(updatedRule.getDescription());
+        existing.setThresholdType(updatedRule.getThresholdType());
+        existing.setThresholdValue(updatedRule.getThresholdValue());
+        existing.setActive(updatedRule.getActive());
+
+        return ruleRepository.save(existing);
     }
 
     @Override
     public List<AnomalyRule> getActiveRules() {
-        return repository.findByActiveTrue();
+        return ruleRepository.findByActiveTrue();
     }
 
     @Override
     public AnomalyRule getRuleByCode(String ruleCode) {
-        return repository.findAll().stream()
+        return ruleRepository.findAll()
+                .stream()
                 .filter(r -> ruleCode.equals(r.getRuleCode()))
                 .findFirst()
-                .orElseThrow(() -> new RuntimeException("Rule not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Rule not found"));
     }
 
     @Override
     public List<AnomalyRule> getAllRules() {
-        return repository.findAll();
+        return ruleRepository.findAll();
     }
 }
