@@ -10,9 +10,11 @@ public interface EmployeeProfileService {
 
     EmployeeProfile getEmployeeById(Long id);
 
+    EmployeeProfile getEmployeeByEmployeeId(String employeeId);
+
     List<EmployeeProfile> getAllEmployees();
 
-    EmployeeProfile updateEmployeeStatus(Long id, String status);
+    EmployeeProfile updateEmployee(Long id, EmployeeProfile employee);
 
-    EmployeeProfile getByEmployeeId(String employeeId);
+    void deactivateEmployee(Long id);
 }

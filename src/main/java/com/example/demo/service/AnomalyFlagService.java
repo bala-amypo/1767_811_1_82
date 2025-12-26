@@ -6,14 +6,11 @@ import java.util.List;
 
 public interface AnomalyFlagService {
 
+    List<AnomalyFlagRecord> getFlagsByEmployee(Long employeeId);
 
-    AnomalyFlagRecord flagAnomaly(AnomalyFlagRecord anomalyFlagRecord);
+    List<AnomalyFlagRecord> getFlagsByMetric(Long metricId);
 
-    AnomalyFlagRecord resolveAnomaly(Long id);
+    List<AnomalyFlagRecord> getUnresolvedFlags();
 
-    List<AnomalyFlagRecord> getAnomaliesByEmployee(Long employeeId);
-
-    List<AnomalyFlagRecord> getAnomaliesByMetric(Long metricId);
-
-    List<AnomalyFlagRecord> getAllAnomalies();
+    AnomalyFlagRecord resolveFlag(Long flagId);
 }

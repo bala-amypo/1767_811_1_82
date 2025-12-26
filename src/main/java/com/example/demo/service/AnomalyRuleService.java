@@ -8,11 +8,9 @@ public interface AnomalyRuleService {
 
     AnomalyRule createRule(AnomalyRule rule);
 
-    AnomalyRule updateRule(Long id, AnomalyRule rule);
-
     List<AnomalyRule> getActiveRules();
 
-    AnomalyRule getRuleById(Long id);
+    AnomalyRule getRuleByCode(String ruleCode);
 
-    List<AnomalyRule> getAllRules();
+    void deactivateRule(String ruleCode);
 }
