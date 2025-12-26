@@ -3,9 +3,11 @@ package com.example.demo.service.impl;
 import com.example.demo.model.TeamSummaryRecord;
 import com.example.demo.repository.*;
 import com.example.demo.service.TeamSummaryService;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
+@Service
 
 public class TeamSummaryServiceImpl implements TeamSummaryService {
 

@@ -4,10 +4,12 @@ import com.example.demo.model.ProductivityMetricRecord;
 import com.example.demo.repository.*;
 import com.example.demo.service.ProductivityMetricService;
 import com.example.demo.util.ProductivityCalculator;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
+@Service
 public class ProductivityMetricServiceImpl implements ProductivityMetricService {
 
     private final ProductivityMetricRecordRepository metricRepo;
