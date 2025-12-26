@@ -1,59 +1,52 @@
 package com.example.demo.service.impl;
 
 import com.example.demo.exception.ResourceNotFoundException;
-import com.example.demo.model.AnomalyFlagRecord;
-import com.example.demo.repository.AnomalyFlagRecordRepository;
+import com.example.demo.model.AnomalyRule;
 import com.example.demo.repository.AnomalyRuleRepository;
-import com.example.demo.service.AnomalyFlagService;
+import com.example.demo.service.AnomalyRuleService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class AnomalyFlagServiceImpl implements AnomalyFlagService {
+public class AnomalyRuleServiceImpl implements AnomalyRuleService {
 
-    private final AnomalyFlagRecordRepository flagRepo;
-    private final AnomalyRuleRepository ruleRepo;
+    private final AnomalyRuleRepository ruleRepository;
 
-    public AnomalyFlagServiceImpl(
-            AnomalyFlagRecordRepository flagRepo,
-            AnomalyRuleRepository ruleRepo
-    ) {
-        this.flagRepo = flagRepo;
-        this.ruleRepo = ruleRepo;
+    public AnomalyRuleServiceImpl(AnomalyRuleRepository ruleRepository) {
+        this.ruleRepository = ruleRepository;
     }
 
     @Override
-    public AnomalyFlagRecord flagAnomaly(AnomalyFlagRecord flag) {
-        // resolved defaults to false if null
-        if (flag.getResolved() == null) {
-            flag.setResolved(false);
-        }
-        return flagRepo.save(flag);
+    public AnomalyRule createRule(AnomalyRule rule) {
+        return ruleRepository.save(rule);
     }
 
     @Override
-    public AnomalyFlagRecord resolveFlag(Long id) {
-        AnomalyFlagRecord flag = flagRepo.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Anomaly flag not found"));
+    public AnomalyRule updateRule(Long id, AnomalyRule updatedRule) {
+        AnomalyRule existing = ruleRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Rule not found"));
 
-        flag.setResolved(true);
-        return flagRepo.save(flag);
+        updatedRule.setId(existing.getId());
+        return ruleRepository.save(updatedRule);
     }
 
     @Override
-    public List<AnomalyFlagRecord> getFlagsByEmployee(Long employeeId) {
-        // No employeeId field in entity → safe fallback
-        return flagRepo.findAll();
+    public List<AnomalyRule> getActiveRules() {
+        return ruleRepository.findByActiveTrue();
     }
 
     @Override
-    public List<AnomalyFlagRecord> getFlagsByMetric(Long metricId) {
-        return flagRepo.findByMetricId(metricId);
+    public AnomalyRule getRuleByCode(String ruleCode) {
+        return ruleRepository.findAll()
+                .stream()
+                .filter(r -> ruleCode.equals(r.getRuleCode()))
+                .findFirst()
+                .orElseThrow(() -> new ResourceNotFoundException("Rule not found"));
     }
 
     @Override
-    public List<AnomalyFlagRecord> getAllFlags() {
-        return flagRepo.findAll();
+    public List<AnomalyRule> getAllRules() {
+        return ruleRepository.findAll();
     }
 }
