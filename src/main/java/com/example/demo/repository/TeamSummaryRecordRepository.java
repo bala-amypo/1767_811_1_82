@@ -7,6 +7,6 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface TeamSummaryRepository extends JpaRepository<TeamSummaryRecord, Long> {
+public interface TeamSummaryRecordRepository extends JpaRepository<TeamSummaryRecord, Long> {
     List<TeamSummaryRecord> findByTeamName(String teamName);
 }

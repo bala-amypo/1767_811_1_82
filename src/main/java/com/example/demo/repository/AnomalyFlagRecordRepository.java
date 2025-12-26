@@ -5,5 +5,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface AnomalyFlagRepository extends JpaRepository<AnomalyFlagRecord, Long> {
+public interface AnomalyFlagRecordRepository extends JpaRepository<AnomalyFlagRecord, Long> {
 }
