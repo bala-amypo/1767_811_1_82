@@ -6,39 +6,39 @@ import com.example.demo.service.UserAccountService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Optional;
+import java.time.LocalDateTime;
 
 @Service
 public class UserAccountServiceImpl implements UserAccountService {
 
-    private final UserAccountRepository userAccountRepository;
+    private final UserAccountRepository repository;
     private final PasswordEncoder passwordEncoder;
 
-    public UserAccountServiceImpl(UserAccountRepository userAccountRepository,
-                                  PasswordEncoder passwordEncoder) {
-        this.userAccountRepository = userAccountRepository;
+    // ⚠️ Constructor order EXACT
+    public UserAccountServiceImpl(
+            UserAccountRepository repository,
+            PasswordEncoder passwordEncoder) {
+
+        this.repository = repository;
         this.passwordEncoder = passwordEncoder;
     }
 
     @Override
-    public UserAccount saveUser(UserAccount userAccount) {
-        // Hash the password before saving
-        userAccount.setPasswordHash(passwordEncoder.encode(userAccount.getPasswordHash()));
-        return userAccountRepository.save(userAccount);
+    public UserAccount registerUser(UserAccount user) {
+        user.setPasswordHash(passwordEncoder.encode(user.getPasswordHash()));
+        user.setCreatedAt(LocalDateTime.now());
+        return repository.save(user);
     }
 
     @Override
-    public List<UserAccount> getAllUsers() {
-        return userAccountRepository.findAll();
+    public UserAccount findByEmail(String email) {
+        return repository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("User not found"));
     }
 
     @Override
-    public Optional<UserAccount> authenticateUser(String username, String password) {
-        Optional<UserAccount> userOpt = userAccountRepository.findByUsername(username);
-        if (userOpt.isPresent() && passwordEncoder.matches(password, userOpt.get().getPasswordHash())) {
-            return userOpt;
-        }
-        return Optional.empty(); // authentication failed
+    public UserAccount findById(Long id) {
+        return repository.findById(id)
+                .orElseThrow(() -> new RuntimeException("User not found"));
     }
 }

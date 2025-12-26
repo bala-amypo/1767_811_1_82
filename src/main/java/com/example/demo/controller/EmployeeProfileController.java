@@ -2,43 +2,52 @@ package com.example.demo.controller;
 
 import com.example.demo.model.EmployeeProfile;
 import com.example.demo.service.EmployeeProfileService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/employees")
+@Tag(name = "Employee Profile")
 public class EmployeeProfileController {
 
-    private final EmployeeProfileService employeeService;
+    private final EmployeeProfileService service;
 
-    public EmployeeProfileController(EmployeeProfileService employeeService) {
-        this.employeeService = employeeService;
+    public EmployeeProfileController(EmployeeProfileService service) {
+        this.service = service;
     }
 
     @PostMapping
     public EmployeeProfile createEmployee(@RequestBody EmployeeProfile employee) {
-        return employeeService.createEmployee(employee);
+        return service.createEmployee(employee);
     }
 
     @GetMapping("/{id}")
-    public EmployeeProfile getEmployeeById(@PathVariable Long id) {
-        return employeeService.getEmployeeById(id);
+    public EmployeeProfile getEmployee(@PathVariable Long id) {
+        return service.getEmployeeById(id);
     }
 
     @GetMapping
     public List<EmployeeProfile> getAllEmployees() {
-        return employeeService.getAllEmployees();
+        return service.getAllEmployees();
     }
 
-    @PutMapping("/{id}/status")
-    public EmployeeProfile updateStatus(@PathVariable Long id,
-                                        @RequestParam String status) {
-        return employeeService.updateEmployeeStatus(id, status);
+    @PutMapping("/{id}")
+    public EmployeeProfile updateEmployee(
+            @PathVariable Long id,
+            @RequestBody EmployeeProfile employee) {
+        return service.updateEmployee(id, employee);
+    }
+
+    @PutMapping("/{id}/deactivate")
+    public void deactivateEmployee(@PathVariable Long id) {
+        service.deactivateEmployee(id);
     }
 
     @GetMapping("/lookup/{employeeId}")
-    public EmployeeProfile getByEmployeeId(@PathVariable String employeeId) {
-        return employeeService.getByEmployeeId(employeeId);
+    public EmployeeProfile lookupByEmployeeId(
+            @PathVariable String employeeId) {
+        return service.getEmployeeByEmployeeId(employeeId);
     }
 }

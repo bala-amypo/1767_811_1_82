@@ -10,38 +10,32 @@ import java.util.List;
 @Service
 public class AnomalyRuleServiceImpl implements AnomalyRuleService {
 
-    private final AnomalyRuleRepository ruleRepository;
+    private final AnomalyRuleRepository repository;
 
-    public AnomalyRuleServiceImpl(AnomalyRuleRepository ruleRepository) {
-        this.ruleRepository = ruleRepository;
+    public AnomalyRuleServiceImpl(AnomalyRuleRepository repository) {
+        this.repository = repository;
     }
 
     @Override
     public AnomalyRule createRule(AnomalyRule rule) {
-        return ruleRepository.save(rule);
-    }
-
-    @Override
-    public AnomalyRule updateRule(Long id, AnomalyRule rule) {
-        AnomalyRule existingRule = ruleRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Rule not found"));
-        rule.setId(existingRule.getId());
-        return ruleRepository.save(rule);
+        return repository.save(rule);
     }
 
     @Override
     public List<AnomalyRule> getActiveRules() {
-        return ruleRepository.findByActiveTrue();
+        return repository.findByActiveTrue();
     }
 
     @Override
-    public AnomalyRule getRuleById(Long id) {
-        return ruleRepository.findById(id)
+    public AnomalyRule getRuleByCode(String ruleCode) {
+        return repository.findByRuleCode(ruleCode)
                 .orElseThrow(() -> new RuntimeException("Rule not found"));
     }
 
     @Override
-    public List<AnomalyRule> getAllRules() {
-        return ruleRepository.findAll();
+    public void deactivateRule(String ruleCode) {
+        AnomalyRule rule = getRuleByCode(ruleCode);
+        rule.setActive(false);
+        repository.save(rule);
     }
 }

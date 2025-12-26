@@ -2,43 +2,39 @@ package com.example.demo.controller;
 
 import com.example.demo.model.AnomalyRule;
 import com.example.demo.service.AnomalyRuleService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/anomaly-rules")
+@Tag(name = "Anomaly Rules")
 public class AnomalyRuleController {
 
-    private final AnomalyRuleService ruleService;
+    private final AnomalyRuleService service;
 
-    public AnomalyRuleController(AnomalyRuleService ruleService) {
-        this.ruleService = ruleService;
+    public AnomalyRuleController(AnomalyRuleService service) {
+        this.service = service;
     }
 
     @PostMapping
     public AnomalyRule createRule(@RequestBody AnomalyRule rule) {
-        return ruleService.createRule(rule);
+        return service.createRule(rule);
     }
 
-    @PutMapping("/{id}")
-    public AnomalyRule updateRule(@PathVariable Long id,
-                                  @RequestBody AnomalyRule rule) {
-        return ruleService.updateRule(id, rule);
+    @PutMapping("/{ruleCode}/deactivate")
+    public void deactivateRule(@PathVariable String ruleCode) {
+        service.deactivateRule(ruleCode);
     }
 
     @GetMapping("/active")
     public List<AnomalyRule> getActiveRules() {
-        return ruleService.getActiveRules();
+        return service.getActiveRules();
     }
 
-    @GetMapping("/{id}")
-    public AnomalyRule getRuleById(@PathVariable Long id) {
-        return ruleService.getRuleById(id);
-    }
-
-    @GetMapping
-    public List<AnomalyRule> getAllRules() {
-        return ruleService.getAllRules();
+    @GetMapping("/{ruleCode}")
+    public AnomalyRule getRule(@PathVariable String ruleCode) {
+        return service.getRuleByCode(ruleCode);
     }
 }

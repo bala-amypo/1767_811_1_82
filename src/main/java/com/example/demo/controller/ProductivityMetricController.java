@@ -2,46 +2,41 @@ package com.example.demo.controller;
 
 import com.example.demo.model.ProductivityMetricRecord;
 import com.example.demo.service.ProductivityMetricService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/metrics")
+@Tag(name = "Productivity Metrics")
 public class ProductivityMetricController {
 
-    private final ProductivityMetricService productivityService;
+    private final ProductivityMetricService service;
 
-    public ProductivityMetricController(ProductivityMetricService productivityService) {
-        this.productivityService = productivityService;
+    public ProductivityMetricController(ProductivityMetricService service) {
+        this.service = service;
     }
 
     @PostMapping
     public ProductivityMetricRecord recordMetric(
-            @RequestBody ProductivityMetricRecord record) {
-        return productivityService.recordMetric(record);
+            @RequestBody ProductivityMetricRecord metric) {
+        return service.recordMetric(metric);
     }
 
-    @PutMapping("/{id}")
-    public ProductivityMetricRecord updateMetric(
-            @PathVariable Long id,
-            @RequestBody ProductivityMetricRecord record) {
-        return productivityService.updateMetric(id, record);
+    @GetMapping("/{id}")
+    public ProductivityMetricRecord getMetric(@PathVariable Long id) {
+        return service.getMetricById(id);
     }
 
     @GetMapping("/employee/{employeeId}")
     public List<ProductivityMetricRecord> getMetricsByEmployee(
             @PathVariable Long employeeId) {
-        return productivityService.getMetricsByEmployee(employeeId);
-    }
-
-    @GetMapping("/{id}")
-    public ProductivityMetricRecord getMetricById(@PathVariable Long id) {
-        return productivityService.getMetricById(id);
+        return service.getMetricsByEmployee(employeeId);
     }
 
     @GetMapping
     public List<ProductivityMetricRecord> getAllMetrics() {
-        return productivityService.getAllMetrics();
+        return service.getAllMetrics();
     }
 }
