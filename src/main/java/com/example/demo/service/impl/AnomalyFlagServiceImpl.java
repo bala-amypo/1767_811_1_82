@@ -1,46 +1,48 @@
 package com.example.demo.service.impl;
 
 import com.example.demo.model.AnomalyFlagRecord;
-import com.example.demo.repository.AnomalyFlagRecordRepository;
+import com.example.demo.repository.*;
 import com.example.demo.service.AnomalyFlagService;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Service
 public class AnomalyFlagServiceImpl implements AnomalyFlagService {
 
-    private final AnomalyFlagRecordRepository repository;
+    private final AnomalyFlagRecordRepository flagRepo;
+    private final AnomalyRuleRepository ruleRepo;
 
-    public AnomalyFlagServiceImpl(AnomalyFlagRecordRepository repository) {
-        this.repository = repository;
+    public AnomalyFlagServiceImpl(
+            AnomalyFlagRecordRepository flagRepo,
+            AnomalyRuleRepository ruleRepo) {
+        this.flagRepo = flagRepo;
+        this.ruleRepo = ruleRepo;
     }
 
     @Override
-    public AnomalyFlagRecord flagAnomaly(AnomalyFlagRecord anomalyFlagRecord) {
-        return repository.save(anomalyFlagRecord);
+    public AnomalyFlagRecord flagAnomaly(AnomalyFlagRecord flag) {
+        return flagRepo.save(flag);
     }
 
     @Override
-    public AnomalyFlagRecord resolveAnomaly(Long id) {
-        AnomalyFlagRecord record = repository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Anomaly not found"));
-        record.setResolved(true);
-        return repository.save(record);
+    public AnomalyFlagRecord resolveFlag(Long id) {
+        AnomalyFlagRecord flag = flagRepo.findById(id)
+                .orElseThrow(() -> new RuntimeException("Flag not found"));
+        flag.setResolved(true);
+        return flagRepo.save(flag);
     }
 
     @Override
-    public List<AnomalyFlagRecord> getAnomaliesByEmployee(Long employeeId) {
-        return repository.findByEmployeeId(employeeId);
+    public List<AnomalyFlagRecord> getFlagsByEmployee(Long employeeId) {
+        return flagRepo.findAll();
     }
 
     @Override
-    public List<AnomalyFlagRecord> getAnomaliesByMetric(Long metricId) {
-        return repository.findByMetricId(metricId);
+    public List<AnomalyFlagRecord> getFlagsByMetric(Long metricId) {
+        return flagRepo.findByMetricId(metricId);
     }
 
     @Override
-    public List<AnomalyFlagRecord> getAllAnomalies() {
-        return repository.findAll();
+    public List<AnomalyFlagRecord> getAllFlags() {
+        return flagRepo.findAll();
     }
 }

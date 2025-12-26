@@ -3,45 +3,45 @@ package com.example.demo.service.impl;
 import com.example.demo.model.AnomalyRule;
 import com.example.demo.repository.AnomalyRuleRepository;
 import com.example.demo.service.AnomalyRuleService;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Service
 public class AnomalyRuleServiceImpl implements AnomalyRuleService {
 
-    private final AnomalyRuleRepository ruleRepository;
+    private final AnomalyRuleRepository repository;
 
-    public AnomalyRuleServiceImpl(AnomalyRuleRepository ruleRepository) {
-        this.ruleRepository = ruleRepository;
+    public AnomalyRuleServiceImpl(AnomalyRuleRepository repository) {
+        this.repository = repository;
     }
 
     @Override
     public AnomalyRule createRule(AnomalyRule rule) {
-        return ruleRepository.save(rule);
+        return repository.save(rule);
     }
 
     @Override
-    public AnomalyRule updateRule(Long id, AnomalyRule rule) {
-        AnomalyRule existingRule = ruleRepository.findById(id)
+    public AnomalyRule updateRule(Long id, AnomalyRule updatedRule) {
+        AnomalyRule existing = repository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Rule not found"));
-        rule.setId(existingRule.getId());
-        return ruleRepository.save(rule);
+        updatedRule.setRuleCode(existing.getRuleCode());
+        return repository.save(updatedRule);
     }
 
     @Override
     public List<AnomalyRule> getActiveRules() {
-        return ruleRepository.findByActiveTrue();
+        return repository.findByActiveTrue();
     }
 
     @Override
-    public AnomalyRule getRuleById(Long id) {
-        return ruleRepository.findById(id)
+    public AnomalyRule getRuleByCode(String ruleCode) {
+        return repository.findAll().stream()
+                .filter(r -> ruleCode.equals(r.getRuleCode()))
+                .findFirst()
                 .orElseThrow(() -> new RuntimeException("Rule not found"));
     }
 
     @Override
     public List<AnomalyRule> getAllRules() {
-        return ruleRepository.findAll();
+        return repository.findAll();
     }
 }
