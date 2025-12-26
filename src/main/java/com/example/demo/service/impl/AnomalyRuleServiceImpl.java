@@ -4,6 +4,7 @@ import com.example.demo.model.AnomalyRule;
 import com.example.demo.repository.AnomalyRuleRepository;
 import com.example.demo.service.AnomalyRuleService;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -17,21 +18,17 @@ public class AnomalyRuleServiceImpl implements AnomalyRuleService {
     }
 
     @Override
+    public AnomalyRule createRule(AnomalyRule rule) {
+        return ruleRepo.save(rule);
+    }
+
+    @Override
     public Optional<AnomalyRule> getRuleById(Long id) {
         return ruleRepo.findById(id);
     }
 
     @Override
-    public List<AnomalyRule> getActiveRules() {
-        return ruleRepo.findByActiveTrue();
-    }
-
-    @Override
-    public AnomalyRule updateRule(Long id, AnomalyRule updatedRule) {
-        return ruleRepo.findById(id).map(rule -> {
-            rule.setName(updatedRule.getName());
-            rule.setActive(updatedRule.isActive());
-            return ruleRepo.save(rule);
-        }).orElse(null);
+    public List<AnomalyRule> getAllRules() {
+        return ruleRepo.findAll();
     }
 }
