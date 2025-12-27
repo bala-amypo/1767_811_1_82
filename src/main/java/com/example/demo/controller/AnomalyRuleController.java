@@ -18,13 +18,11 @@ public class AnomalyRuleController {
         this.service = service;
     }
 
-    // POST /
     @PostMapping
     public AnomalyRule create(@RequestBody AnomalyRule rule) {
         return service.createRule(rule);
     }
 
-    // PUT /{id}
     @PutMapping("/{id}")
     public AnomalyRule update(
             @PathVariable Long id,
