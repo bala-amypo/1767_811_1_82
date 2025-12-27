@@ -1,62 +1,29 @@
-// package com.example.demo.security;
-
-// import com.example.demo.model.UserAccount;
-// import com.example.demo.repository.UserAccountRepository;
-// import org.springframework.security.core.userdetails.*;
-// import org.springframework.stereotype.Service;
-
-// @Service
-// public class CustomUserDetailsService implements UserDetailsService {
-
-//     private final UserAccountRepository userRepo;
-
-//     public CustomUserDetailsService(UserAccountRepository userRepo) {
-//         this.userRepo = userRepo;
-//     }
-
-//     @Override
-//     public UserDetails loadUserByUsername(String username)
-//             throws UsernameNotFoundException {
-
-//         UserAccount user = userRepo.findByEmail(username)
-//                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
-
-//         return User.withUsername(user.getEmail())
-//                 .password(user.getPasswordHash())
-//                 .roles(user.getRoles().toArray(new String[0]))
-//                 .build();
-//     }
-// }
-package com.example.demo.config;
+package com.example.demo.security;
 
 import com.example.demo.model.UserAccount;
 import com.example.demo.repository.UserAccountRepository;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.*;
 import org.springframework.stereotype.Service;
 
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
 
-    private final UserAccountRepository repository;
+    private final UserAccountRepository userRepo;
 
-    public CustomUserDetailsService(UserAccountRepository repository) {
-        this.repository = repository;
+    public CustomUserDetailsService(UserAccountRepository userRepo) {
+        this.userRepo = userRepo;
     }
 
     @Override
-    public UserDetails loadUserByUsername(String email)
+    public UserDetails loadUserByUsername(String username)
             throws UsernameNotFoundException {
 
-        UserAccount user = repository.findByEmail(email)
+        UserAccount user = userRepo.findByEmail(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
 
-        return User.builder()
-                .username(user.getEmail())
+        return User.withUsername(user.getEmail())
                 .password(user.getPasswordHash())
-                .roles("USER")
+                .roles(user.getRoles().toArray(new String[0]))
                 .build();
     }
 }
