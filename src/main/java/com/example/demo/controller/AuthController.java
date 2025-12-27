@@ -1,12 +1,15 @@
 
 
-package com.example.demo.controller;
+
+
+   
+
+        package com.example.demo.controller;
 
 import com.example.demo.model.UserAccount;
 import com.example.demo.service.UserAccountService;
-import com.example.demo.config.JwtTokenProvider;
-
 import io.swagger.v3.oas.annotations.tags.Tag;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -19,14 +22,11 @@ public class AuthController {
 
     private final UserAccountService service;
     private final AuthenticationManager authenticationManager;
-    private final JwtTokenProvider jwtTokenProvider;
 
     public AuthController(UserAccountService service,
-                          AuthenticationManager authenticationManager,
-                          JwtTokenProvider jwtTokenProvider) {
+                          AuthenticationManager authenticationManager) {
         this.service = service;
         this.authenticationManager = authenticationManager;
-        this.jwtTokenProvider = jwtTokenProvider;
     }
 
     // ✅ REGISTER
@@ -35,28 +35,22 @@ public class AuthController {
         return service.registerUser(user);
     }
 
-    // ✅ LOGIN (JWT based – same logic as above)
+    // ✅ LOGIN (NO JWT, FIXED)
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody UserAccount loginRequest) {
+    public ResponseEntity<String> login(@RequestBody UserAccount loginRequest) {
 
-        // authenticate username & password
         UsernamePasswordAuthenticationToken authToken =
                 new UsernamePasswordAuthenticationToken(
-                        loginRequest.getUsername(),
-                        loginRequest.getPassword()
+                        loginRequest.getEmail(),        // OR username if you use that
+                        loginRequest.getPasswordHash()  // ✅ correct field
                 );
 
         authenticationManager.authenticate(authToken);
 
-        // fetch user
-        UserAccount user = service.findByUsername(loginRequest.getUsername());
-
-        // generate JWT
-        String token = jwtTokenProvider.generateToken(authToken, user);
-
-        return ResponseEntity.ok(token);
+        return ResponseEntity.ok("Login successful");
     }
 }
+
 
 // package com.example.demo.controller;
 
