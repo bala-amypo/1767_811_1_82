@@ -16,13 +16,11 @@ public class AuthController {
         this.service = service;
     }
 
-    // POST /register
     @PostMapping("/register")
     public UserAccount register(@RequestBody UserAccount user) {
         return service.registerUser(user);
     }
 
-    // POST /login (dummy login for testcases)
     @PostMapping("/login")
     public String login() {
         return "Login successful";

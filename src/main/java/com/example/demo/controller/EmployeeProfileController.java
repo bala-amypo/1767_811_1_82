@@ -18,25 +18,21 @@ public class EmployeeProfileController {
         this.service = service;
     }
 
-    // POST / - Create employee
     @PostMapping
     public EmployeeProfile create(@RequestBody EmployeeProfile employee) {
         return service.createEmployee(employee);
     }
 
-    // GET /{id} - Get employee
     @GetMapping("/{id}")
     public EmployeeProfile getById(@PathVariable Long id) {
         return service.getEmployeeById(id);
     }
 
-    // GET / - List all
     @GetMapping
     public List<EmployeeProfile> getAll() {
         return service.getAllEmployees();
     }
 
-    // PUT /{id}/status - Update status
     @PutMapping("/{id}/status")
     public EmployeeProfile updateStatus(
             @PathVariable Long id,
@@ -44,7 +40,6 @@ public class EmployeeProfileController {
         return service.updateEmployeeStatus(id, active);
     }
 
-    // GET /lookup/{employeeId} - Lookup
     @GetMapping("/lookup/{employeeId}")
     public EmployeeProfile lookup(@PathVariable String employeeId) {
         return service.findByEmployeeId(employeeId)

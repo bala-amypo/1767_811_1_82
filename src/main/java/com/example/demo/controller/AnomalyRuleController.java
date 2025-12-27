@@ -30,13 +30,11 @@ public class AnomalyRuleController {
         return service.updateRule(id, rule);
     }
 
-    // GET /active
     @GetMapping("/active")
     public List<AnomalyRule> getActive() {
         return service.getActiveRules();
     }
 
-    // GET /{id}
     @GetMapping("/{id}")
     public AnomalyRule getById(@PathVariable Long id) {
         return service.getAllRules().stream()
@@ -45,7 +43,6 @@ public class AnomalyRuleController {
                 .orElseThrow(() -> new RuntimeException("Rule not found"));
     }
 
-    // GET /
     @GetMapping
     public List<AnomalyRule> getAll() {
         return service.getAllRules();

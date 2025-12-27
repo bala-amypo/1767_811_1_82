@@ -32,20 +32,17 @@ public class ProductivityMetricController {
         return service.updateMetric(id, metric);
     }
 
-    // GET /employee/{employeeId}
     @GetMapping("/employee/{employeeId}")
     public List<ProductivityMetricRecord> byEmployee(@PathVariable Long employeeId) {
         return service.getMetricsByEmployee(employeeId);
     }
 
-    // GET /{id}
     @GetMapping("/{id}")
     public ProductivityMetricRecord getById(@PathVariable Long id) {
         return service.getMetricById(id)
                 .orElseThrow(() -> new RuntimeException("Metric not found"));
     }
 
-    // GET /
     @GetMapping
     public List<ProductivityMetricRecord> getAll() {
         return service.getAllMetrics();
