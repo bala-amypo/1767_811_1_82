@@ -41,7 +41,7 @@ public class AnomalyFlagServiceImpl implements AnomalyFlagService {
 
     @Override
     public List<AnomalyFlagRecord> getFlagsByEmployee(Long employeeId) {
-        return flagRepo.findAll(); // entity has no employeeId
+        return flagRepo.findAll(); 
     }
 
     @Override

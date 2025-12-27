@@ -18,13 +18,11 @@ public class ProductivityMetricController {
         this.service = service;
     }
 
-    // POST / - Record metric
     @PostMapping
     public ProductivityMetricRecord create(@RequestBody ProductivityMetricRecord metric) {
         return service.recordMetric(metric);
     }
 
-    // PUT /{id} - Update metric
     @PutMapping("/{id}")
     public ProductivityMetricRecord update(
             @PathVariable Long id,

@@ -19,7 +19,6 @@ public class TeamSummaryController {
         this.service = service;
     }
 
-    // POST /generate
     @PostMapping("/generate")
     public TeamSummaryRecord generate(
             @RequestParam String teamName,
@@ -27,13 +26,11 @@ public class TeamSummaryController {
         return service.generateSummary(teamName, summaryDate);
     }
 
-    // GET /team/{teamName}
     @GetMapping("/team/{teamName}")
     public List<TeamSummaryRecord> byTeam(@PathVariable String teamName) {
         return service.getSummariesByTeam(teamName);
     }
 
-    // GET /
     @GetMapping
     public List<TeamSummaryRecord> getAll() {
         return service.getAllSummaries();
